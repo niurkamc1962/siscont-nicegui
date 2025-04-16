@@ -1,0 +1,49 @@
+# Entorno virtual (venv, .venv, env, etc.)
+venv/
+.venv/
+env/
+ENV/
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos de desarrollo y dependencias
+*.egg-info/
+*.egg
+dist/
+build/
+pip-wheel-metadata/
+
+# Archivos de configuración y entornos
+.env
+.env.local
+.env.dev
+.env.prod
+.venv
+.vscode/
+.idea/
+
+# Logs y bases de datos locales
+*.log
+*.sqlite
+*.db
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos generados por NiceGUI (si los hay)
+static/
+assets/
+*.tmp
+*.temp
+
+# Jupyter Notebook (si lo usas)
+.ipynb_checkpoints/
+
+# Testing (pytest, coverage, etc.)
+.coverage
+htmlcov/
+.pytest_cache/
