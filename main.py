@@ -1,7 +1,6 @@
 # Ejemplo donde NiceGui es la app principal y FastAPI la subapp
 # Muestra la interface web y los endpoints
 
-
 from os import getenv
 from fastapi import FastAPI
 from nicegui import ui, app, Client

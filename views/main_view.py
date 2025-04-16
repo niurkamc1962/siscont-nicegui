@@ -1,7 +1,7 @@
 from nicegui import ui, Client, app
 from stores.store import AppState
 from datetime import datetime
-from db.db_manager import create_db_manager
+from db.database import create_db_manager
 
 
 def main_view(client: Client):
@@ -41,19 +41,19 @@ def on_module_change(e, store: AppState):
 
 
 def connection_form(store: AppState):
-    with ui.card().classes('absolute-center w-96'):
-        ui.label('Conectar con servidor ERP').classes('text-h6')
-        
-        ip_input = ui.input('IP del servidor ERP').classes('w-full')
-        user_input = ui.input('Usuario').classes('w-full')
-        password_input = ui.input('Contraseña', password=True, password_toggle_button=True).classes('w-full')
-        database_input = ui.input('Base de datos', value='master').classes('w-full')
-        port_input = ui.input('Puerto', value='1433').classes('w-full')
-        
-        error_label = ui.label('').classes('text-red')
+    with ui.column().classes('items-center justify-center min-h-screen'):
+        with ui.card().classes('w-full max-w-md p-4'):
+            ui.label('Conectar con servidor ERP').classes('text-h6 mb-4 text-center')
 
-        async def connect():
-            try:
+            ip_input = ui.input('IP del servidor ERP').classes('w-full')
+            user_input = ui.input('Usuario').classes('w-full')
+            password_input = ui.input('Contraseña', password=True, password_toggle_button=True).classes('w-full')
+            database_input = ui.input('Base de datos', value='master').classes('w-full')
+            port_input = ui.input('Puerto', value='1433').classes('w-full')
+
+            error_label = ui.label('').classes('text-red text-sm')
+
+            async def connect():
                 if not ip_input.value:
                     error_label.text = 'La IP del servidor es requerida'
                     return
@@ -63,31 +63,30 @@ def connection_form(store: AppState):
                 if not password_input.value:
                     error_label.text = 'La contraseña es requerida'
                     return
+                try:
+                    store.db_params = {
+                        'host': ip_input.value,
+                        'user': user_input.value,
+                        'password': password_input.value,
+                        'database': database_input.value or 'master',
+                        'port': port_input.value or '1433'
+                    }
+                    db_manager = create_db_manager(store.db_params)
+                    with db_manager.cursor() as cursor:
+                        cursor.execute("SELECT 1")
+                        if cursor.fetchone()[0] == 1:
+                            store.connected = True
+                            store.db_manager = db_manager
+                            store.ip_server = ip_input.value
+                            ui.notify('Conexión exitosa!', type='positive')
+                            ui.open('/')
+                except Exception as e:
+                    error_label.text = f'Error de conexión: {str(e)}'
+                    store.reset()
+                    ui.notify('Error al conectar', type='negative')
 
-                store.db_params = {
-                    'host': ip_input.value,
-                    'user': user_input.value,
-                    'password': password_input.value,
-                    'database': database_input.value or 'master',
-                    'port': port_input.value or '1433'
-                }
+            ui.button('Conectar', on_click=connect).classes('mt-4 w-full')
 
-                db_manager = create_db_manager(store.db_params)
-                with db_manager.cursor() as cursor:
-                    cursor.execute("SELECT 1")
-                    if cursor.fetchone()[0] == 1:
-                        store.connected = True
-                        store.db_manager = db_manager
-                        store.ip_server = ip_input.value
-                        ui.notify('Conexión exitosa!', type='positive')
-                        ui.open('/')
-
-            except Exception as e:
-                error_label.text = f'Error de conexión: {str(e)}'
-                store.reset()
-                ui.notify('Error al conectar', type='negative')
-
-        ui.button('Conectar', on_click=connect).classes('mt-2 w-full')
 
 
 def welcome_view():

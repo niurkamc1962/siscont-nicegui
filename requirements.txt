@@ -6,6 +6,7 @@ annotated-types==0.7.0
 anyio==4.9.0
 attrs==25.3.0
 bidict==0.23.1
+bottle==0.13.2
 certifi==2025.1.31
 charset-normalizer==3.4.1
 click==8.1.8
@@ -28,8 +29,10 @@ numpy==2.2.4
 orjson==3.10.16
 pandas==2.2.3
 propcache==0.3.1
+proxy-tools==0.1.0
 pscript==0.7.7
 pydantic==2.11.3
+pydantic-settings==2.8.1
 pydantic_core==2.33.1
 Pygments==2.19.1
 pyodbc==5.2.0
@@ -39,6 +42,7 @@ python-engineio==4.12.0
 python-multipart==0.0.20
 python-socketio==5.13.0
 pytz==2025.2
+pywebview==5.4
 PyYAML==6.0.2
 requests==2.32.3
 simple-websocket==1.1.0
