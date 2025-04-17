@@ -24,12 +24,6 @@ app.state.store = AppState()
 def index(client: Client):
     main_view(client)
 
-# Montar FastAPI en NiceGUI
-# @app.on_startup
-# def setup_api():
-#     # Mount FastAPI en el path /api (backend)
-#     app.native.mount("/api", fastapi_app)
-
 
 # Ejecutar NiceGUI como la app principal
 ui.run_with(

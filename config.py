@@ -1,5 +1,5 @@
 # config.py
-# Utilizando pydantic.BaseSettings para cargar .env una sola vez
+# Utilizando pydantic_settings.BaseSettings para cargar .env una sola vez
 
 from pydantic_settings import BaseSettings
 from functools import lru_cache
