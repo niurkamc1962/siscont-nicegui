@@ -10,13 +10,13 @@ from routes.api import router as api_router
 import uvicorn
 
 # Crear app FastAPI (backend)
-fastapi_app = FastAPI()
+fastapi_app = FastAPI(title='Siscont API')
 
 # Incluir tus endpoints en FastAPI
 fastapi_app.include_router(api_router, prefix="/api")
 
 
-# Configurar estado global
+# Configurar estado global para toda la aplicacion
 app.state.store = AppState()
 
 # Vista principal de NiceGUI (frontend)
