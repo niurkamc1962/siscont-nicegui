@@ -7,22 +7,52 @@ from views.welcome_view import welcome_view
 from views.modules import modules, get_module_choices
 from datetime import datetime
 
+
 def main_view(client: Client):
     store: AppState = app.state.store
 
-    ui.query('body').style('background-color: #f5f5f5')
+    ui.query("body").style("background-color: #f5f5f5")
 
     # encabezado
-    with ui.header().classes('bg-primary text-white'):
-        ui.label('Siscont - ERPNext').classes('text-h5')
+    with ui.header().classes("bg-primary text-white"):
+        ui.label("Siscont - ERPNext").classes("text-h5")
         ui.space()
         if store.connected:
             # Título para el menú
-            ui.label('MENU').classes('text-h5 text-center text-white')
+            # ui.label('MENU').classes('text-h4 text-center text-white')
+            # ui.select(
+            #     options=[(m['label'], m['value']) for m in get_module_choices()] + [('Salir', 'salir')],
+            #     on_change=lambda e: on_module_change(e, store)
+            # ).props('filled label="Módulos"')
+            
+            
+            # adicionando color blanco para el label
+            ui.add_head_html(
+                """
+                <style>
+                    .q-field__label {
+                        color: white !important;
+                    }
+                </style>
+                """
+            )
+
+            modulos = [
+                "Nomina",
+                "Contabilidad",
+                "Activos Fijos",
+                "Cobros y Pagos",
+                "Control de Almacen",
+                "Inventarios",
+                "Cerrar Sesion",
+            ]
+
             ui.select(
-                options=[(m['label'], m['value']) for m in get_module_choices()] + [('Salir', 'salir')],
-                on_change=lambda e: on_module_change(e, store)
-            ).props('filled label="Módulos"')
+                options=modulos,
+                with_input=True,
+                label="Modulos",
+                on_change=lambda e: on_module_change(e, store),
+            ).props("filled color=white text-white").classes("text-white")
 
     # with ui.page_sticky(position='top'): # quitar esto para que cada vista controle su espacio
     if not store.connected:
@@ -33,14 +63,15 @@ def main_view(client: Client):
         welcome_view()
 
     # Footer
-    with ui.footer().classes('bg-primary text-white'):
-        ui.label(f'Tecnomática © {datetime.now().year}').classes('text-center w-full')
+    with ui.footer().classes("bg-primary text-white"):
+        ui.label(f"Tecnomática © {datetime.now().year}").classes("text-center w-full")
+
 
 def on_module_change(e, store: AppState):
-    if e.value == 'salir':
+    if e.value == "salir":
         store.reset()
-        ui.notify('Sesión cerrada', type='info')
-        ui.navigate.to('/')
+        ui.notify("Sesión cerrada", type="info")
+        ui.navigate.to("/")
     else:
         store.selected_module = e.value
-        ui.navigate.to('/')
+        ui.navigate.to("/")
