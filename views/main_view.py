@@ -4,7 +4,7 @@ from nicegui import ui, app, Client
 from stores.store import AppState
 from views.connection_view import connection_form
 from views.welcome_view import welcome_view
-from views.modules import modules, get_module_choices
+from views.modules import modules
 from datetime import datetime
 
 
@@ -18,14 +18,6 @@ def main_view(client: Client):
         ui.label("Siscont - ERPNext").classes("text-h5")
         ui.space()
         if store.connected:
-            # Título para el menú
-            # ui.label('MENU').classes('text-h4 text-center text-white')
-            # ui.select(
-            #     options=[(m['label'], m['value']) for m in get_module_choices()] + [('Salir', 'salir')],
-            #     on_change=lambda e: on_module_change(e, store)
-            # ).props('filled label="Módulos"')
-            
-            
             # adicionando color blanco para el label
             ui.add_head_html(
                 """
@@ -36,16 +28,16 @@ def main_view(client: Client):
                 </style>
                 """
             )
-
-            modulos = [
-                "Nomina",
-                "Contabilidad",
-                "Activos Fijos",
-                "Cobros y Pagos",
-                "Control de Almacen",
-                "Inventarios",
-                "Cerrar Sesion",
-            ]
+            # modulos = [
+            #     "Nomina",
+            #     "Contabilidad",
+            #     "Activos Fijos",
+            #     "Cobros y Pagos",
+            #     "Control de Almacen",
+            #     "Inventarios",
+            #     "Salir",
+            # ]
+            modulos = list(modules.keys()) + ["Salir"]
 
             ui.select(
                 options=modulos,
@@ -57,8 +49,8 @@ def main_view(client: Client):
     # with ui.page_sticky(position='top'): # quitar esto para que cada vista controle su espacio
     if not store.connected:
         connection_form(store)
-    elif store.selected_module in modules:
-        modules[store.selected_module].render()
+    elif store.selected_module and store.selected_module in modules:
+        modules[store.selected_module]()  # ejecuta la vista del modulo
     else:
         welcome_view()
 
@@ -68,7 +60,7 @@ def main_view(client: Client):
 
 
 def on_module_change(e, store: AppState):
-    if e.value == "salir":
+    if e.value == "Salir":
         store.reset()
         ui.notify("Sesión cerrada", type="info")
         ui.navigate.to("/")

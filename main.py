@@ -5,6 +5,7 @@ from os import getenv
 from fastapi import FastAPI
 from nicegui import ui, app, Client
 from views.main_view import main_view
+from views.selected_module import selected_module
 from stores.store import AppState
 from routes.api import router as api_router
 import uvicorn
@@ -24,6 +25,9 @@ app.state.store = AppState()
 def index(client: Client):
     main_view(client)
 
+@ui.page('/modulo/{module_name}')
+def module_page(client: Client, module_name: str):
+    selected_module(module_name)
 
 # Ejecutar NiceGUI como la app principal
 ui.run_with(
