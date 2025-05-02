@@ -28,15 +28,6 @@ def main_view(client: Client):
                 </style>
                 """
             )
-            # modulos = [
-            #     "Nomina",
-            #     "Contabilidad",
-            #     "Activos Fijos",
-            #     "Cobros y Pagos",
-            #     "Control de Almacen",
-            #     "Inventarios",
-            #     "Salir",
-            # ]
             modulos = list(modules.keys()) + ["Salir"]
 
             ui.select(
@@ -46,7 +37,6 @@ def main_view(client: Client):
                 on_change=lambda e: on_module_change(e, store),
             ).props("filled color=white text-white").classes("text-white")
 
-    # with ui.page_sticky(position='top'): # quitar esto para que cada vista controle su espacio
     if not store.connected:
         connection_form(store)
     elif store.selected_module and store.selected_module in modules:

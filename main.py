@@ -1,13 +1,14 @@
 # Ejemplo donde NiceGui es la app principal y FastAPI la subapp
 # Muestra la interface web y los endpoints
 
-from os import getenv
+from config import get_settings
 from fastapi import FastAPI
 from nicegui import ui, app, Client
 from views.main_view import main_view
 from views.selected_module import selected_module
 from stores.store import AppState
 from routes.api import router as api_router
+from routes.api_nomina import router as nomina_router
 import uvicorn
 
 # Crear app FastAPI (backend)
@@ -15,6 +16,7 @@ fastapi_app = FastAPI(title='Siscont API')
 
 # Incluir tus endpoints en FastAPI
 fastapi_app.include_router(api_router, prefix="/api")
+fastapi_app.include_router(nomina_router, prefix="/nomina")
 
 
 # Configurar estado global para toda la aplicacion
@@ -37,10 +39,11 @@ ui.run_with(
 )
 
 if __name__ == "__main__":
-    port = int(getenv("PORT", 9802))
+    # port = int(getenv("PORT", 9802))
+    settings = get_settings()
     uvicorn.run(
         "main:fastapi_app",
         host="0.0.0.0",
-        port=port,
+        port=settings.PORT,
         reload=True
     )

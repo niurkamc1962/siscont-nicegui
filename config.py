@@ -5,8 +5,10 @@ from pydantic_settings import BaseSettings
 from functools import lru_cache
 
 class Settings(BaseSettings):
+    API_BASE_URL: str
     SQL_USER: str
     SQL_PORT: int
+    PORT: int = 9802  # Agregado
 
     class Config:
         env_file = ".env"
