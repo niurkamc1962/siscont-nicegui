@@ -2,7 +2,7 @@
 
 from aiohttp import TraceRequestEndParams
 from nicegui import ui, app, Client
-from stores.store import AppState
+from stores.store import AppState, app_state
 from views.connection_view import connection_form
 from views.welcome_view import welcome_view
 from views.modules import modules

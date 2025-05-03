@@ -98,15 +98,49 @@ def get_relaciones_trabajadores(db) -> List[Dict]:
         raise
 
 # Construye el tree de las relaciones entre las tablas
-def construir_tree_trabajadores(relaciones: List[Dict]) -> List[Dict]:
+# def construir_tree_trabajadores(relaciones: List[Dict]) -> List[Dict]:
+#     tree = {}
+#     for rel in relaciones:
+#         source = rel['source_table']
+#         target = rel['target_table']
+#         label = f"{target} ({rel['source_column']} → {rel['target_column']})"
+        
+#         if source not in tree:
+#             tree[source] = {'id': source, 'label': source, 'children': []}
+#         tree[source]['children'].append({'id': target, 'label': label})
+
+#     return list(tree.values())
+# def construir_tree_trabajadores(relaciones: List[Dict]) -> List[Dict]:
+#     tree = {}
+#     for rel in relaciones:
+#         if not all(k in rel for k in ('source_table', 'target_table', 'source_column', 'target_column')):
+#             continue  # ignora relaciones mal formadas
+
+#         source = rel['source_table']
+#         target = rel['target_table']
+#         label = f"{target} ({rel['source_column']} → {rel['target_column']})"
+        
+#         if source not in tree:
+#             tree[source] = {'id': source, 'label': source, 'children': []}
+#         tree[source]['children'].append({'id': target, 'label': label})
+#     return list(tree.values())
+
+
+def construir_tree_trabajadores(relaciones):
     tree = {}
+
     for rel in relaciones:
         source = rel['source_table']
         target = rel['target_table']
-        label = f"{target} ({rel['source_column']} → {rel['target_column']})"
-        
-        if source not in tree:
-            tree[source] = {'id': source, 'label': source, 'children': []}
-        tree[source]['children'].append({'id': target, 'label': label})
+        source_col = rel['source_column']
+        target_col = rel['target_column']
 
+        # Si no existe la tabla en el árbol, la agregamos
+        if source not in tree:
+            tree[source] = {"label": source, "children": []}
+
+        relation_str = f"{source_col} → {target}.{target_col}"
+        tree[source]["children"].append({"label": relation_str})
+
+    # Convertimos el dict a lista
     return list(tree.values())
