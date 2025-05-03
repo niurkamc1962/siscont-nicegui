@@ -10,7 +10,7 @@ from decimal import Decimal
 
 from db.models import ConexionParams
 from db.utils import is_serializable, serialize_value
-from config import get_settings
+from config.config import get_settings
 
 settings = get_settings()
 

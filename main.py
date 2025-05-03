@@ -2,7 +2,7 @@
 # Muestra la interface web y los endpoints
 
 import os
-from config import get_settings
+from config.config import get_settings
 from fastapi import FastAPI
 from nicegui import ui, app, Client, storage
 from views.main_view import main_view
@@ -40,18 +40,16 @@ def init_app_state_from_storage():
             app_state.reset()
 
 
-
-
 # Vista principal de NiceGUI (frontend)
 @ui.page('/')
-def index(client: Client):
+async def index(client: Client):
     # Llamar a la función para restaurar el estado desde el almacenamiento
     init_app_state_from_storage()
-    main_view(client)
+    await main_view(client)
 
 @ui.page('/modulo/{module_name}')
-def module_page(client: Client, module_name: str):
-    selected_module(module_name)
+async def module_page(client: Client, module_name: str):
+    await selected_module(module_name)
 
 # Ejecutar NiceGUI como la app principal
 ui.run_with(

@@ -3,7 +3,7 @@ from db.models import ConexionParams
 from stores.store import AppState
 from datetime import datetime
 from db.database import create_db_manager
-from config import get_settings
+from config.config import get_settings
 
 ui.add_head_html('''
     <style>

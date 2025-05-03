@@ -1,42 +1,56 @@
 from nicegui import ui
-# from db.db_nomina import get_trabajadores, get_relaciones_trabajadores, construir_tree_trabajadores
-# from stores.store import app_state
 from db.db_nomina import construir_tree_trabajadores
-from services.nomina_services import fetch_relaciones_trabajadores
+from services.nomina_services import fetch_relaciones_trabajadores, fetch_trabajadores
+import json
 
 
-def nomina_view():
-    with ui.column().classes('p-6'):
-        ui.label('Módulo de Nómina').classes('text-2xl text-primary')
-        ui.button('Mostrar relaciones entre tablas', on_click=modal_relaciones).classes('mt-4')
-        ui.button('Procesar Nómina', on_click=lambda: ui.notify('Nómina procesada')).classes('mt-4')
-        ui.button('Exportar tablas SQL server a JSON relaciones entre tablas', on_click=lambda: ui.notify('Exportados las tablas a formatos JSON y generados los doctypes JSON')).classes('mt-4')
-        # ui.button('Exportar a JSON', on_click=exportar_json).classes('mt-4')
-
-
-async def modal_relaciones():
+async def nomina_view():
     relaciones = await fetch_relaciones_trabajadores()
     tree_data = construir_tree_trabajadores(relaciones)
 
-    with ui.dialog().props('max-width=900') as dialog, ui.card().style('min-width: 800px'):
-        ui.label('Relaciones entre Tablas').classes('text-lg font-bold mb-4')
+    trabajadores = await fetch_trabajadores()
 
-        tree = ui.tree(
-            tree_data,
-            label_key='id',
-            node_key='id',
-            children_key='children',
-            on_select=lambda e: ui.notify(f'Seleccionado: {e.value}')
-        )
+    with ui.column().classes('p-6'):
+        ui.label('Módulo de Nómina').classes('text-2xl text-primary mb-4')
 
-        tree.add_slot('default-header', '''
-            <span :props="props">� <strong>{{ props.node.id }}</strong></span>
-        ''')
+        with ui.tabs().classes('w-full') as tabs:
+            tab1 = ui.tab('Relaciones entre Tablas')
+            tab2 = ui.tab('Datos de Trabajadores')
+            tab3 = ui.tab('Exportar JSON')
+            tab4 = ui.tab('Importar JSON a Doctype')
 
-        tree.add_slot('default-body', '''
-            <span :props="props">{{ props.node.description }}</span>
-        ''')
+        with ui.tab_panels(tabs, value=tab1).classes('w-full'):
+            with ui.tab_panel(tab1):
+                ui.label('Relaciones entre Tablas').classes('text-lg font-bold mb-2')
+                tree = ui.tree(
+                    tree_data,
+                    label_key='id',
+                    node_key='id',
+                    children_key='children',
+                    on_select=lambda e: ui.notify(f'Seleccionado: {e.value}')
+                )
+                tree.add_slot('default-header', '''
+                    <span :props="props">� <strong>{{ props.node.id }}</strong></span>
+                ''')
+                tree.add_slot('default-body', '''
+                    <span :props="props">{{ props.node.description }}</span>
+                ''')
 
-        ui.button('Cerrar', on_click=dialog.close).classes('mt-4')
+            with ui.tab_panel(tab2):
+                ui.label('Datos de Trabajadores').classes('text-lg font-bold mb-2')
+                for t in trabajadores:
+                    with ui.expansion(f"{t['CPTrabNombre']} {t['CPTrabPriApellido']} {t['CPTrabSegApellido']}").classes('w-full'):
+                        for key, value in t.items():
+                            ui.label(f"{key}: {value}")
 
-    dialog.open()
+            with ui.tab_panel(tab3):
+                ui.label('Exportar JSON').classes('text-lg font-bold mb-2')
+                json_str = json.dumps(trabajadores, indent=2, ensure_ascii=False)
+                textarea = ui.textarea(value=json_str).classes('w-full h-96')
+                ui.button('Guardar JSON en archivo', on_click=lambda: ui.download(textarea.value, 'trabajadores.json')).classes('mt-2')
+
+            with ui.tab_panel(tab4):
+                ui.label('Importar JSON a formato Doctype').classes('text-lg font-bold mb-2')
+                file = ui.upload(on_upload=lambda e: ui.notify('Archivo cargado')).props('accept=.json')
+                # Aquí puedes añadir lógica para parsear el JSON y transformarlo
+                ui.button('Procesar JSON como Doctype', on_click=lambda: ui.notify('JSON procesado a Doctype')).classes('mt-4')

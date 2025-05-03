@@ -2,8 +2,8 @@
 from nicegui import ui, app
 from db.models import ConexionParams
 from db.database import create_db_manager
-from config import get_settings
-from stores.store import AppState, DBParams
+from config.config import get_settings
+from stores.store import AppState, app_state
 from datetime import datetime
 
 
@@ -53,7 +53,7 @@ def connection_form(store:AppState):
                             app.storage.user['last_activity'] = datetime.now().isoformat()
 
                             ui.notify('Conexión exitosa!', type='positive')
-                            print(f"DB Params: {app_state+db_params}")
+                            print(f"DB Params: {app_state.db_params}")
                             ui.navigate.to('/')
                 except Exception as e:
                     error_label.text = f'Error de conexión: {str(e)}'

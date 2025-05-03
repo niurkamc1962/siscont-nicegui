@@ -1,10 +1,10 @@
 from nicegui import ui, app
 from datetime import datetime
-from views.modules import modules
+from config.modules import modules
 from stores.store import AppState
 
 
-def base_layout(content_function, store: AppState, active_module: str = None):
+async def base_layout(content_function, store: AppState, active_module: str = None):
     """Renderiza layout común con header, contenido dinámico y footer."""
 
     ui.query("body").style("background-color: #f5f5f5")
@@ -25,14 +25,14 @@ def base_layout(content_function, store: AppState, active_module: str = None):
             ).props("filled color=white text-white").classes("text-white")
 
     # Contenido dinámico
-    content_function()
+    await content_function()
 
     # Footer
     with ui.footer().classes("bg-primary text-white"):
         ui.label(f"Tecnomática © {datetime.now().year}").classes("text-center w-full")
 
 
-def on_module_change(e, store: AppState):
+async def on_module_change(e, store: AppState):
     if e.value == "Salir":
         store.reset()
         # Limpiar storage de usuario

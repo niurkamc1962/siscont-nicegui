@@ -97,35 +97,6 @@ def get_relaciones_trabajadores(db) -> List[Dict]:
         logging.error(f"Error al obtener relaciones entre tablas: {e}")
         raise
 
-# Construye el tree de las relaciones entre las tablas
-# def construir_tree_trabajadores(relaciones: List[Dict]) -> List[Dict]:
-#     tree = {}
-#     for rel in relaciones:
-#         source = rel['source_table']
-#         target = rel['target_table']
-#         label = f"{target} ({rel['source_column']} → {rel['target_column']})"
-        
-#         if source not in tree:
-#             tree[source] = {'id': source, 'label': source, 'children': []}
-#         tree[source]['children'].append({'id': target, 'label': label})
-
-#     return list(tree.values())
-# def construir_tree_trabajadores(relaciones: List[Dict]) -> List[Dict]:
-#     tree = {}
-#     for rel in relaciones:
-#         if not all(k in rel for k in ('source_table', 'target_table', 'source_column', 'target_column')):
-#             continue  # ignora relaciones mal formadas
-
-#         source = rel['source_table']
-#         target = rel['target_table']
-#         label = f"{target} ({rel['source_column']} → {rel['target_column']})"
-        
-#         if source not in tree:
-#             tree[source] = {'id': source, 'label': source, 'children': []}
-#         tree[source]['children'].append({'id': target, 'label': label})
-#     return list(tree.values())
-
-
 def construir_tree_trabajadores(relaciones):
     tree = {}
     counter = 1  # para generar IDs únicos

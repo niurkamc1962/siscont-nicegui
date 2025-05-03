@@ -1,7 +1,7 @@
 # Llamadas a los endpoints de nomina
 # Usando httpx que es  cliente moderno de Python para interactuar con APIs de forma asincrona 
 
-from config import get_settings
+from config.config import get_settings
 import httpx
 from stores.store import app_state
 
