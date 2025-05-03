@@ -128,19 +128,41 @@ def get_relaciones_trabajadores(db) -> List[Dict]:
 
 def construir_tree_trabajadores(relaciones):
     tree = {}
+    counter = 1  # para generar IDs únicos
 
     for rel in relaciones:
-        source = rel['source_table']
-        target = rel['target_table']
-        source_col = rel['source_column']
-        target_col = rel['target_column']
+        src = rel["source_table"]
+        tgt = rel["target_table"]
+        src_col = rel["source_column"]
+        tgt_col = rel["target_column"]
 
-        # Si no existe la tabla en el árbol, la agregamos
-        if source not in tree:
-            tree[source] = {"label": source, "children": []}
+        if src not in tree:
+            tree[src] = {
+                "id": src,
+                "description": f"Relaciones desde {src}",
+                "children": {}
+            }
 
-        relation_str = f"{source_col} → {target}.{target_col}"
-        tree[source]["children"].append({"label": relation_str})
+        if tgt not in tree[src]["children"]:
+            tree[src]["children"][tgt] = {
+                "id": f"{src}_{tgt}",
+                "description": f"Relaciones hacia {tgt}",
+                "children": []
+            }
 
-    # Convertimos el dict a lista
-    return list(tree.values())
+        tree[src]["children"][tgt]["children"].append({
+            "id": f"rel_{counter}",
+            "description": f"{src_col} → {tgt}.{tgt_col}"
+        })
+
+        counter += 1
+
+    # convertir a lista y formatear recursivamente
+    return [
+        {
+            "id": src_node["id"],
+            "description": src_node["description"],
+            "children": list(tgt_dict.values())
+        } for src_node in tree.values() for tgt_dict in [src_node["children"]]
+    ]
+

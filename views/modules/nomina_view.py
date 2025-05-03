@@ -16,13 +16,27 @@ def nomina_view():
 
 async def modal_relaciones():
     relaciones = await fetch_relaciones_trabajadores()
-    print('RELACIONES:', relaciones)
-    tree_trabajadores = construir_tree_trabajadores(relaciones)
-    print('TREE', tree_trabajadores)
-    
-    with ui.dialog().props('max-width=600') as dialog, ui.card():
-        ui.label('Relaciones entre Tablas')
-        ui.tree(tree_trabajadores, label_key='label')  # Corregido aquí: se mostrará el árbol
-        ui.button('Cerrar', on_click=dialog.close)
+    tree_data = construir_tree_trabajadores(relaciones)
+
+    with ui.dialog().props('max-width=900') as dialog, ui.card().style('min-width: 800px'):
+        ui.label('Relaciones entre Tablas').classes('text-lg font-bold mb-4')
+
+        tree = ui.tree(
+            tree_data,
+            label_key='id',
+            node_key='id',
+            children_key='children',
+            on_select=lambda e: ui.notify(f'Seleccionado: {e.value}')
+        )
+
+        tree.add_slot('default-header', '''
+            <span :props="props">� <strong>{{ props.node.id }}</strong></span>
+        ''')
+
+        tree.add_slot('default-body', '''
+            <span :props="props">{{ props.node.description }}</span>
+        ''')
+
+        ui.button('Cerrar', on_click=dialog.close).classes('mt-4')
 
     dialog.open()
