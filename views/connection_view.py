@@ -1,11 +1,13 @@
 # views/connection_view.py
-
-from nicegui import ui
+from nicegui import ui, app
 from db.models import ConexionParams
 from db.database import create_db_manager
 from config import get_settings
+from stores.store import AppState
+from datetime import datetime
 
-def connection_form(store):
+
+def connection_form(store:AppState):
     settings = get_settings()
 
     with ui.column().classes('w-full h-screen flex items-center justify-center bg-gray-100 p-4'):
@@ -41,6 +43,15 @@ def connection_form(store):
                         if cursor.fetchone()[0] == 1:
                             store.connected = True
                             store.db_manager = db_manager
+                            store.ip_server = ip_input.value
+
+                            # ✅ Guardar estado persistente del usuario
+                            # Guardar en user storage (persistente durante la sesión del navegador)
+                            app.storage.user['connected'] = True
+                            app.storage.user['db_params'] = store.db_params
+                            app.storage.user['ip_server'] = store.ip_server
+                            app.storage.user['last_activity'] = datetime.now().isoformat()
+
                             ui.notify('Conexión exitosa!', type='positive')
                             ui.navigate.to('/')
                 except Exception as e:

@@ -1,9 +1,10 @@
 # Ejemplo donde NiceGui es la app principal y FastAPI la subapp
 # Muestra la interface web y los endpoints
 
+import os
 from config import get_settings
 from fastapi import FastAPI
-from nicegui import ui, app, Client
+from nicegui import ui, app, Client, storage
 from views.main_view import main_view
 from views.selected_module import selected_module
 from stores.store import AppState
@@ -22,6 +23,7 @@ fastapi_app.include_router(nomina_router, prefix="/nomina")
 # Configurar estado global para toda la aplicacion
 app.state.store = AppState()
 
+
 # Vista principal de NiceGUI (frontend)
 @ui.page('/')
 def index(client: Client):
@@ -35,7 +37,7 @@ def module_page(client: Client, module_name: str):
 ui.run_with(
     fastapi_app,
     mount_path='/',  # Ruta base para NiceGUI
-    storage_secret='tu_secreto_secreto',  # Necesario para sesiones
+    storage_secret=os.getenv("STORAGE_SECRET"),  # Necesario para sesiones
 )
 
 if __name__ == "__main__":

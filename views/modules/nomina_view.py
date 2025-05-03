@@ -1,5 +1,7 @@
 from nicegui import ui
 from db.db_nomina import get_trabajadores, get_relaciones_trabajadores, construir_tree_trabajadores
+from stores.store import app_state
+
 
 def nomina_view():
     with ui.column().classes('p-6'):
@@ -11,13 +13,12 @@ def nomina_view():
 
 
 def modal_relaciones():
-    relaciones = get_relaciones_trabajadores()
+    relaciones = get_relaciones_trabajadores(app_state.conexion)
     tree_trabajadores = construir_tree_trabajadores(relaciones)
     
     with ui.dialog().props('max-width=600') as dialog, ui.card():
         ui.label('Relaciones entre Tablas')
-        tree_data = get_relaciones_trabajadores()
-        ui.tree(tree_data, label_key='label')
+        ui.tree(tree_trabajadores, label_key='label')  # Corregido aquí: se mostrará el árbol
         ui.button('Cerrar', on_click=dialog.close)
-    
+
     dialog.open()

@@ -1,10 +1,18 @@
-# views/selected_module.py
-
 from nicegui import app
-from nicegui import ui
+from stores.store import AppState
+from views.modules import modules
+from views.base_layout import base_layout
 
 
 def selected_module(module_name: str):
-    with ui.column().classes('items-center justify-center h-screen'):
-        ui.label(f'Seleccionaste el módulo: {module_name}').classes('text-2xl text-primary')
-        ui.button('Volver al inicio', on_click=lambda: ui.navigate.to('/')).classes('mt-4')
+    store: AppState = app.state.store
+    store.selected_module = module_name  # guarda el módulo actual
+
+    def module_content():
+        if module_name in modules:
+            modules[module_name]()
+        else:
+            from nicegui import ui
+            ui.label("Módulo no encontrado").classes("text-red-500 text-xl")
+
+    base_layout(module_content, store, active_module=module_name)

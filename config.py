@@ -8,7 +8,8 @@ class Settings(BaseSettings):
     API_BASE_URL: str
     SQL_USER: str
     SQL_PORT: int
-    PORT: int = 9802  # Agregado
+    PORT: int = 9802
+    STORAGE_SECRET: str
 
     class Config:
         env_file = ".env"
