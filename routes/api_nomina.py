@@ -7,21 +7,36 @@ import json
 
 router = APIRouter()
 
-@router.post("/trabajadores", tags=["Nómina"])
+
+@router.post(
+    "/trabajadores",
+    summary="Lista todos los trabajadores",
+    description="Muestra listado de los trabajadores segun campos seleccionados",
+    tags=["Nómina"],
+)
 async def get_trabajadores_endpoint(params: ConexionParams):
     try:
         with create_db_manager(params) as db:
             data = get_trabajadores(db)
             return JSONResponse(content=data)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al obtener datos de SCPTrabajadores: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener datos de SCPTrabajadores: {str(e)}",
+        )
 
 
-@router.post("/relaciones-trabajadores", tags=["Nómina"])
+@router.post("/relaciones-trabajadores",
+    summary="Muestra relacion de la tabla trabajadores con las demas",
+    description="Muestra relacion entre las tablas con la de los trabajadores ",
+    tags=["Nómina"])
 async def get_relaciones_trabajadores_endpoint(params: ConexionParams):
     try:
         with create_db_manager(params) as db:
             data = get_relaciones_trabajadores(db)
             return JSONResponse(content=data)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al obtener relaciones entre tablas: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener relaciones entre tablas: {str(e)}",
+        )
