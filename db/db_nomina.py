@@ -179,3 +179,25 @@ def get_cargos_trabajadores(db):
     except Exception as e:
         logging.error(f"Error al obtener datos de los cargos de los trabajadores: {e}")
         raise
+    
+# Para obtener los tipos de trabajadores
+def get_tipos_trabajadores(db):
+    query = """
+        SELECT TipTrabId , TipTrabCodigo, TipTrabDescripcion
+        FROM SNOTIPOTRABAJADOR s 
+        WHERE TipTrabDesactivado  = '' OR TipTrabDesactivado IS NULL
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            # serializando los campos para que no de error los decimales
+            result = [
+                {key: serialize_value(value) for key, value in zip(columns, row)}
+                for row in rows
+            ]
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener datos de los tipos de trabajadores: {e}")
+        raise
