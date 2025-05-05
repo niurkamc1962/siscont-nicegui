@@ -59,3 +59,20 @@ async def get_categorias_endpoint(params: ConexionParams):
             status_code=500,
             detail=f"Error al obtener datos de categorías: {str(e)}",
         )
+        
+@router.post(
+    "/cargos-trabajadores",
+    summary="Lista los cargos de los trabajadores",
+    description="Muestra los cargos de los trabajadores",
+    tags=["Nómina"],
+)
+async def get_cargos_endpoint(params: ConexionParams):
+    try:
+        with create_db_manager(params) as db:
+            data = nomina.get_cargos_trabajadores(db)
+            return JSONResponse(content=data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener los datos de los cargos: {str(e)}",
+        )

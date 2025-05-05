@@ -1,9 +1,11 @@
 from typing import List, Dict
+
 # from db.database import DatabaseManager
-from db.utils import serialize_value  # importa tu helper
+from utils.serialization import serialize_value  # importa tu helper
 import logging
 
 from stores.store import app_state
+
 
 # Funcion para obtener los datos de SCPTrabajadores segun el query necesario para el JSON
 def get_trabajadores(db) -> List[Dict]:
@@ -48,9 +50,7 @@ def get_trabajadores(db) -> List[Dict]:
 
             result = []
             for row in rows:
-                row_dict = {
-                    col: serialize_value(val) for col, val in zip(columns, row)
-                }
+                row_dict = {col: serialize_value(val) for col, val in zip(columns, row)}
                 result.append(row_dict)
 
             return result
@@ -58,7 +58,6 @@ def get_trabajadores(db) -> List[Dict]:
     except Exception as e:
         logging.error(f"Error al obtener SCPTrabajadores: {e}")
         raise Exception(f"Error al obtener datos de SCPTrabajadores: {str(e)}")
-
 
 
 # Prepara la relacion entre las tablas con SCPTrabajadores
@@ -86,16 +85,17 @@ def get_relaciones_trabajadores(db) -> List[Dict]:
             rows = cursor.fetchall()
             return [
                 {
-                    'source_table': row[0],
-                    'source_column': row[1],
-                    'target_table': row[2],
-                    'target_column': row[3],
+                    "source_table": row[0],
+                    "source_column": row[1],
+                    "target_table": row[2],
+                    "target_column": row[3],
                 }
                 for row in rows
             ]
     except Exception as e:
         logging.error(f"Error al obtener relaciones entre tablas: {e}")
         raise
+
 
 def construir_tree_trabajadores(relaciones):
     tree = {}
@@ -111,20 +111,19 @@ def construir_tree_trabajadores(relaciones):
             tree[src] = {
                 "id": src,
                 "description": f"Relaciones desde {src}",
-                "children": {}
+                "children": {},
             }
 
         if tgt not in tree[src]["children"]:
             tree[src]["children"][tgt] = {
                 "id": f"{src}_{tgt}",
                 "description": f"Relaciones hacia {tgt}",
-                "children": []
+                "children": [],
             }
 
-        tree[src]["children"][tgt]["children"].append({
-            "id": f"rel_{counter}",
-            "description": f"{src_col} → {tgt}.{tgt_col}"
-        })
+        tree[src]["children"][tgt]["children"].append(
+            {"id": f"rel_{counter}", "description": f"{src_col} → {tgt}.{tgt_col}"}
+        )
 
         counter += 1
 
@@ -133,12 +132,14 @@ def construir_tree_trabajadores(relaciones):
         {
             "id": src_node["id"],
             "description": src_node["description"],
-            "children": list(tgt_dict.values())
-        } for src_node in tree.values() for tgt_dict in [src_node["children"]]
+            "children": list(tgt_dict.values()),
+        }
+        for src_node in tree.values()
+        for tgt_dict in [src_node["children"]]
     ]
 
 
-# Para obteber las categorias ocupacionales
+# Para obtener las categorias ocupacionales
 def get_categorias_ocupacionales(db):
     query = """
         SELECT CategODescripcion  
@@ -153,5 +154,28 @@ def get_categorias_ocupacionales(db):
             result = [dict(zip(columns, row)) for row in rows]
             return result
     except Exception as e:
-        logging.error(f"Error al obtener relaciones entre tablas: {e}")
+        logging.error(f"Error al obtener datos de las categorias ocupacionales: {e}")
+        raise
+
+
+# Para obtener los cargos de los trabajadores
+def get_cargos_trabajadores(db):
+    query = """
+        SELECT CargId, CargCodigo, CargDescripcion
+        FROM SNOCARGOS
+        WHERE CargDesactivado  = '' OR CargDesactivado IS NULL
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            # serializando los campos para que no de error los decimales
+            result = [
+                {key: serialize_value(value) for key, value in zip(columns, row)}
+                for row in rows
+            ]
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener datos de los cargos de los trabajadores: {e}")
         raise
