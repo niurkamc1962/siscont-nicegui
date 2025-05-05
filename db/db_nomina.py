@@ -137,3 +137,21 @@ def construir_tree_trabajadores(relaciones):
         } for src_node in tree.values() for tgt_dict in [src_node["children"]]
     ]
 
+
+# Para obteber las categorias ocupacionales
+def get_categorias_ocupacionales(db):
+    query = """
+        SELECT CategODescripcion  
+        FROM SNOCATEGOCUP 
+        WHERE CategDesactivado = ' ' OR CategDesactivado IS NULL
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            result = [dict(zip(columns, row)) for row in rows]
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener relaciones entre tablas: {e}")
+        raise
