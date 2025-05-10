@@ -1,15 +1,13 @@
 # db/database.py
 
-from typing import Optional, Dict, List, Any
+from typing import Dict, List, Any
 from contextlib import contextmanager
 import pyodbc
 import json
 from os import path, makedirs
-from datetime import datetime, date
-from decimal import Decimal
 
 from db.models import ConexionParams
-from db.utils import is_serializable, serialize_value
+from utils.serialization import is_serializable, serialize_value
 from config.config import get_settings
 
 settings = get_settings()
