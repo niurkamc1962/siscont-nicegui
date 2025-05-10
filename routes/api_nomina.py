@@ -93,3 +93,56 @@ async def get_tipos_trabajadores_endpoint(params: ConexionParams):
             status_code=500,
             detail=f"Error al obtener los datos de los tipos de trabajadores: {str(e)}",
         )
+
+
+@router.post(
+    "/tipos-retenciones",
+    summary="Lista los tipos de retenciones",
+    description="Muestra los tipos de los retenciones",
+    tags=["Nómina"],
+)
+async def get_tipos_retenciones_endpoint(params: ConexionParams):
+    try:
+        with create_db_manager(params) as db:
+            data = nomina.get_tipos_retenciones(db)
+            return JSONResponse(content=data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener los datos de los tipos de retenciones {str(e)}",
+        )
+
+
+@router.post(
+    "/pensionados",
+    summary="Lista los pensionados",
+    description="Muestra los pensionados",
+    tags=["Nómina"],
+)
+async def get_pensionados_endpoint(params: ConexionParams):
+    try:
+        with create_db_manager(params) as db:
+            data = nomina.get_pensionados(db)
+            return JSONResponse(content=data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener los datos de los pensionados {str(e)}",
+        )
+
+@router.post(
+    "/tasas_destajos",
+    summary="Lista las tasas de destajos",
+    description="Muestra las tasas de destajos",
+    tags=["Nómina"],
+)
+async def get_tasas_destajos_endpoint(params: ConexionParams):
+    try:
+        with create_db_manager(params) as db:
+            data = nomina.get_tasas_destajos(db)
+            return JSONResponse(content=data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener los datos de las tasas de destajos {str(e)}",
+        )

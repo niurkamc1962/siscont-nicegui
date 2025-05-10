@@ -1,10 +1,8 @@
 from typing import List, Dict
 
-# from db.database import DatabaseManager
+from utils.jsons_utils import save_json_file
 from utils.serialization import serialize_value  # importa tu helper
 import logging
-
-from stores.store import app_state
 
 
 # Funcion para obtener los datos de SCPTrabajadores segun el query necesario para el JSON
@@ -60,7 +58,7 @@ def get_trabajadores(db) -> List[Dict]:
         raise Exception(f"Error al obtener datos de SCPTrabajadores: {str(e)}")
 
 
-# Prepara la relacion entre las tablas con SCPTrabajadores
+# Prepara la relacion entre las tablas con SCPTrabajadores y las muestra en el frontend
 def get_relaciones_trabajadores(db) -> List[Dict]:
     query = """
     SELECT 
@@ -139,19 +137,26 @@ def construir_tree_trabajadores(relaciones):
     ]
 
 
-# Para obtener las categorias ocupacionales
+# Para obtener las categorias ocupacionales y poniendo alias con el nombre del campo en el doctype
 def get_categorias_ocupacionales(db):
+    doctype_name = "occupacional_category"
+
     query = """
-        SELECT CategODescripcion  
+        SELECT CategODescripcion as category_name  
         FROM SNOCATEGOCUP 
         WHERE CategDesactivado = ' ' OR CategDesactivado IS NULL
     """
+
     try:
         with db.cursor() as cursor:
             cursor.execute(query)
             columns = [col[0] for col in cursor.description]
             rows = cursor.fetchall()
             result = [dict(zip(columns, row)) for row in rows]
+
+            output_path = save_json_file(doctype_name, result)
+
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
         logging.error(f"Error al obtener datos de las categorias ocupacionales: {e}")
@@ -179,7 +184,8 @@ def get_cargos_trabajadores(db):
     except Exception as e:
         logging.error(f"Error al obtener datos de los cargos de los trabajadores: {e}")
         raise
-    
+
+
 # Para obtener los tipos de trabajadores
 def get_tipos_trabajadores(db):
     query = """
@@ -200,4 +206,71 @@ def get_tipos_trabajadores(db):
             return result
     except Exception as e:
         logging.error(f"Error al obtener datos de los tipos de trabajadores: {e}")
+        raise
+
+
+# Para obtener las retenciones
+def get_tipos_retenciones(db):
+    query = """
+        SELECT CPCRetDescripcion , CRetDeudaCon, ClcuIDCuenta, CRetPPrioridad, CRetPPenAlimenticia, CRetPConPlazos 
+        FROM SCPCONRETPAGAR s
+        WHERE CRetPDesactivado  = '' OR CRetPDesactivado IS NULL
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            # serializando los campos para que no de error los decimales
+            result = [
+                {key: serialize_value(value) for key, value in zip(columns, row)}
+                for row in rows
+            ]
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener datos de los tipos de retenciones: {e}")
+        raise
+
+# Para obtener loa pensionados
+def get_pensionados(db):
+    query = """
+        SELECT MantPensCiPens, MantPensNombre, MantPensPriApe, MantPensSegApe, MantPensDir, MantPensFormPag, MantPensTMagn
+        FROM SNOMANTPENS
+        WHERE MantPensDesactivada  = '' OR MantPensDesactivada IS NULL
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            # serializando los campos para que no de error los decimales
+            result = [
+                {key: serialize_value(value) for key, value in zip(columns, row)}
+                for row in rows
+            ]
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener datos de los pensionados: {e}")
+        raise
+
+# Para obtener tasas de destajo
+def get_tasas_destajos(db):
+    query = """
+        SELECT TasaDDescripcion , TasaDTasa
+        FROM SNONOMENCLADORTASASDESTAJO
+        WHERE TasaDDescripcion  != '' OR TasaDDescripcion IS NOT NULL
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            # serializando los campos para que no de error los decimales
+            result = [
+                {key: serialize_value(value) for key, value in zip(columns, row)}
+                for row in rows
+            ]
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener datos de las tasas de destajos: {e}")
         raise
