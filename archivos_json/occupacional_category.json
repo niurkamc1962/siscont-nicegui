@@ -1,0 +1,22 @@
+{
+    "occupacional_category": [
+        {
+            "category_name": "ADMINISTRATIVO"
+        },
+        {
+            "category_name": "DIRIGENTE"
+        },
+        {
+            "category_name": "ESTUDIANTE"
+        },
+        {
+            "category_name": "OBRERO"
+        },
+        {
+            "category_name": "SERVICIO"
+        },
+        {
+            "category_name": "TÉCNICO"
+        }
+    ]
+}
