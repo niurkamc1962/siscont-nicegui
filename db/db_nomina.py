@@ -7,6 +7,9 @@ import logging
 
 # Funcion para obtener los datos de SCPTrabajadores segun el query necesario para el JSON
 def get_trabajadores(db) -> List[Dict]:
+    doctype_name = "employee"
+    module_name = "Setup"
+
     # Definimos un mapeo explícito de campos
     field_mapping = [
         # Campos del doctype principal (trabajador)
@@ -72,6 +75,9 @@ def get_trabajadores(db) -> List[Dict]:
                             break
 
                 result.append({"employee": employee_data})
+
+            output_path = save_json_file(doctype_name, result, module_name)
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
 
             return result
 
