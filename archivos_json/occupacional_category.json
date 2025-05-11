@@ -1,5 +1,7 @@
 {
-    "occupacional_category": [
+    "doctype": "occupacional_category",
+    "module": "Cuba",
+    "data": [
         {
             "category_name": "ADMINISTRATIVO"
         },

@@ -1,0 +1,102 @@
+{
+    "doctype": "withholding_type",
+    "module": "Cuba",
+    "data": [
+        {
+            "withholding_type_name": "CONTRIBUCION E IMPUESTOS",
+            "debt_to": "2",
+            "account": 200898.0,
+            "priority": "2",
+            "child_support": "0",
+            "by_installments": "1"
+        },
+        {
+            "withholding_type_name": "PENSIÓN ALIMENTICIA",
+            "debt_to": "1",
+            "account": 2008132.0,
+            "priority": "1",
+            "child_support": "1",
+            "by_installments": "2"
+        },
+        {
+            "withholding_type_name": "CRÉDITO BANCARIO",
+            "debt_to": "1",
+            "account": 2008133.0,
+            "priority": "3",
+            "child_support": "0",
+            "by_installments": "1"
+        },
+        {
+            "withholding_type_name": "LEY GRAL DE VIVIENDA",
+            "debt_to": "1",
+            "account": 2008134.0,
+            "priority": "4",
+            "child_support": "0",
+            "by_installments": "1"
+        },
+        {
+            "withholding_type_name": "PRES. EST. DEC",
+            "debt_to": "1",
+            "account": 2008767.0,
+            "priority": "5",
+            "child_support": "0",
+            "by_installments": "1"
+        },
+        {
+            "withholding_type_name": "CUENTA DE AHORRO BPA",
+            "debt_to": "1",
+            "account": 2008135.0,
+            "priority": "11",
+            "child_support": "0",
+            "by_installments": "2"
+        },
+        {
+            "withholding_type_name": "EMBARGO JUDICIAL",
+            "debt_to": "1",
+            "account": 2008768.0,
+            "priority": "6",
+            "child_support": "0",
+            "by_installments": "1"
+        },
+        {
+            "withholding_type_name": "CUENTAS COBRAR PER. ENT.",
+            "debt_to": "2",
+            "account": 200898.0,
+            "priority": "7",
+            "child_support": "0",
+            "by_installments": "1"
+        },
+        {
+            "withholding_type_name": "MULTAS ADMINISTRATIVAS",
+            "debt_to": "1",
+            "account": 2008769.0,
+            "priority": "8",
+            "child_support": "0",
+            "by_installments": "1"
+        },
+        {
+            "withholding_type_name": "RECARGO CRED. BANCARIO",
+            "debt_to": "1",
+            "account": 2008770.0,
+            "priority": "9",
+            "child_support": "0",
+            "by_installments": "2"
+        },
+        {
+            "withholding_type_name": "VIVIENDA VINCULADA",
+            "debt_to": "1",
+            "account": 2008136.0,
+            "priority": "10",
+            "child_support": "0",
+            "by_installments": "2"
+        },
+        {
+            "withholding_type_name": "SEGURO DE VIDA PERSONALES",
+            "debt_to": "1",
+            "account": 2013983.0,
+            "priority": "12",
+            "child_support": "0",
+            "by_installments": "2"
+        }
+    ]
+}

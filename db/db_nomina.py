@@ -7,30 +7,38 @@ import logging
 
 # Funcion para obtener los datos de SCPTrabajadores segun el query necesario para el JSON
 def get_trabajadores(db) -> List[Dict]:
-    query = """
-    SELECT 
-        T.CPTrabConsecutivoID,
-        T.CPTrabNombre,
-        T.CPTrabPriApellido,
-        T.CPTrabSegApellido,
-        T.TrabSexo,
-        T.CategId,
-        T.CargId,
-        T.TrabFechaAlta,
-        T.TrabFechaBaja,
-        T.TrabFormaCobro,
-        T.TrabTmagnMN,
-        T.TrabCorreo,
-        T.TrabCPVacaciones,
-        T.TipTrabId,
-        C.CargDescripcion,
-        TT.TipTrabDescripcion,
-        R.ProvCod,
-        R.MunicCod,
-        R.TRepartosCodigo,
-        R.TRepartosNombre,
-        PD.SRHPersDireccionDir,
-        PD.SRHPersDireccionOficial
+    # Definimos un mapeo explícito de campos
+    field_mapping = [
+        # Campos del doctype principal (trabajador)
+        ('identity_number', ('employee', 'T.CPTrabConsecutivoID')),
+        ('first_name', ('employee', 'T.CPTrabNombre')),
+        ('last_name', ('employee', 'T.CPTrabPriApellido')),
+        ('second_surname', ('employee', 'T.CPTrabSegApellido')),
+        ('gender', ('employee', 'T.TrabSexo')),
+        ('category_name', ('employee', 'T.CategId')),
+        ('designation_name', ('employee', 'T.CargId')),
+        ('date_of_joining', ('employee', 'T.TrabFechaAlta')),
+        ('contract_end_date', ('employee', 'T.TrabFechaBaja')),
+        ('salary_mode', ('employee', 'T.TrabFormaCobro')),
+        ('banc_ac_no', ('employee', 'T.TrabTmagnMN')),
+        ('company_email', ('employee', 'T.TrabCorreo')),
+        ('accumulate_vacation', ('employee', 'T.TrabCPVacaciones')),
+        ('direccion', ('employee', 'PD.SRHPersDireccionDir')),
+        ('oficial', ('employee', 'PD.SRHPersDireccionOficial')),
+
+        # Campos de otros doctypes
+        ('province_name', ('province', 'R.ProvCod')),
+        ('id', ('city', 'R.MunicCod')),
+    ]
+
+    # Construimos la cláusula SELECT
+    select_clauses = [
+        f"{sql_field} as {alias}" for alias, (_, sql_field) in field_mapping
+    ]
+
+    query = f"""
+    SELECT
+        {', '.join(select_clauses)}
     FROM SCPTrabajadores AS T
     LEFT JOIN SNOCARGOS AS C ON T.CargId = C.CargId
     LEFT JOIN SNOTIPOTRABAJADOR AS TT ON T.TipTrabId = TT.TipTrabId
@@ -48,14 +56,29 @@ def get_trabajadores(db) -> List[Dict]:
 
             result = []
             for row in rows:
-                row_dict = {col: serialize_value(val) for col, val in zip(columns, row)}
-                result.append(row_dict)
+                employee_data = {}
+
+                for col, val in zip(columns, row):
+                    for alias, (doctype, _) in field_mapping:
+                        if alias == col:
+                            val = serialize_value(val)
+
+                            if doctype == 'employee':
+                                employee_data[alias] = val
+                            else:
+                                if doctype not in employee_data:
+                                    employee_data[doctype] = {}
+                                employee_data[doctype][alias] = val
+                            break
+
+                result.append({"employee": employee_data})
 
             return result
 
     except Exception as e:
         logging.error(f"Error al obtener SCPTrabajadores: {e}")
         raise Exception(f"Error al obtener datos de SCPTrabajadores: {str(e)}")
+
 
 
 # Prepara la relacion entre las tablas con SCPTrabajadores y las muestra en el frontend
@@ -140,6 +163,7 @@ def construir_tree_trabajadores(relaciones):
 # Para obtener las categorias ocupacionales y poniendo alias con el nombre del campo en el doctype
 def get_categorias_ocupacionales(db):
     doctype_name = "occupacional_category"
+    module_name = "Cuba"
 
     query = """
         SELECT CategODescripcion as category_name  
@@ -154,7 +178,7 @@ def get_categorias_ocupacionales(db):
             rows = cursor.fetchall()
             result = [dict(zip(columns, row)) for row in rows]
 
-            output_path = save_json_file(doctype_name, result)
+            output_path = save_json_file(doctype_name, result, module_name )
 
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
@@ -165,13 +189,15 @@ def get_categorias_ocupacionales(db):
 
 # Para obtener los cargos de los trabajadores
 def get_cargos_trabajadores(db):
+    doctype_name = "designation"
+    module_name = "Setup"
     query = """
-        SELECT CargId, CargCodigo, CargDescripcion
+        SELECT CargDescripcion as designation_name
         FROM SNOCARGOS
         WHERE CargDesactivado  = '' OR CargDesactivado IS NULL
     """
     try:
-        with db.cursor() as cursor:
+        with db.cursor() as cursor: 
             cursor.execute(query)
             columns = [col[0] for col in cursor.description]
             rows = cursor.fetchall()
@@ -180,6 +206,8 @@ def get_cargos_trabajadores(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
+            output_path = save_json_file(doctype_name, result, module_name)
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
         logging.error(f"Error al obtener datos de los cargos de los trabajadores: {e}")
@@ -188,8 +216,10 @@ def get_cargos_trabajadores(db):
 
 # Para obtener los tipos de trabajadores
 def get_tipos_trabajadores(db):
+    doctype_name = "employment_type"
+    module_name = "HR"
     query = """
-        SELECT TipTrabId , TipTrabCodigo, TipTrabDescripcion
+        SELECT TipTrabDescripcion as employee_type_name
         FROM SNOTIPOTRABAJADOR s 
         WHERE TipTrabDesactivado  = '' OR TipTrabDesactivado IS NULL
     """
@@ -203,6 +233,8 @@ def get_tipos_trabajadores(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
+            output_path = save_json_file(doctype_name, result, module_name)
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
         logging.error(f"Error al obtener datos de los tipos de trabajadores: {e}")
@@ -211,8 +243,15 @@ def get_tipos_trabajadores(db):
 
 # Para obtener las retenciones
 def get_tipos_retenciones(db):
+    doctype_name = "withholding_type"
+    module_name = "Cuba"
     query = """
-        SELECT CPCRetDescripcion , CRetDeudaCon, ClcuIDCuenta, CRetPPrioridad, CRetPPenAlimenticia, CRetPConPlazos 
+        SELECT CPCRetDescripcion  as withholding_type_name, 
+        CRetDeudaCon as debt_to, 
+        ClcuIDCuenta as account,
+        CRetPPrioridad as priority,
+        CRetPPenAlimenticia as child_support,
+        CRetPConPlazos as by_installments 
         FROM SCPCONRETPAGAR s
         WHERE CRetPDesactivado  = '' OR CRetPDesactivado IS NULL
     """
@@ -226,6 +265,8 @@ def get_tipos_retenciones(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
+            output_path = save_json_file(doctype_name, result, module_name)
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
         logging.error(f"Error al obtener datos de los tipos de retenciones: {e}")
