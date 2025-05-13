@@ -6,10 +6,10 @@ from typing import OrderedDict
 
 from config.config import get_output_dir
 
-def save_json_file(doctype_name: str, data: list, module_name: str = None)-> str:
+def save_json_file(doctype_name: str, data: list, module_name: str = None, sqlserver_name: str = None)-> str:
     output_dir = get_output_dir()
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, f"{doctype_name}.json")
+    output_path = os.path.join(output_dir, f"{sqlserver_name}.json")
 
     # Preparando el formato del JSON
     content = OrderedDict()

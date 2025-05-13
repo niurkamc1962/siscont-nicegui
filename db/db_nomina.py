@@ -8,6 +8,7 @@ import logging
 # Funcion para obtener los datos de SCPTrabajadores segun el query necesario para el JSON
 def get_trabajadores(db) -> List[Dict]:
     doctype_name = "employee"
+    sqlserver_name = "SCPTRABAJADORES"
     module_name = "Setup"
 
     # Definimos un mapeo explícito de campos
@@ -18,8 +19,6 @@ def get_trabajadores(db) -> List[Dict]:
         ('last_name', ('employee', 'T.CPTrabPriApellido')),
         ('second_surname', ('employee', 'T.CPTrabSegApellido')),
         ('gender', ('employee', 'T.TrabSexo')),
-        ('category_name', ('employee', 'T.CategId')),
-        ('designation_name', ('employee', 'T.CargId')),
         ('date_of_joining', ('employee', 'T.TrabFechaAlta')),
         ('contract_end_date', ('employee', 'T.TrabFechaBaja')),
         ('salary_mode', ('employee', 'T.TrabFormaCobro')),
@@ -30,6 +29,8 @@ def get_trabajadores(db) -> List[Dict]:
         ('oficial', ('employee', 'PD.SRHPersDireccionOficial')),
 
         # Campos de otros doctypes
+        ('category_name', ('occupational_category', 'C.CategODescripcion')),
+        ('designation_name', ('designation', 'CAR.CargDescripcion')),
         ('province_name', ('province', 'R.ProvCod')),
         ('id', ('city', 'R.MunicCod')),
     ]
@@ -43,7 +44,8 @@ def get_trabajadores(db) -> List[Dict]:
     SELECT
         {', '.join(select_clauses)}
     FROM SCPTrabajadores AS T
-    LEFT JOIN SNOCARGOS AS C ON T.CargId = C.CargId
+    LEFT JOIN SNOCARGOS AS CAR ON T.CargId = CAR.CargId
+    LEFT JOIN SNOCATEGOCUP AS C ON T.CategId = C.CategId
     LEFT JOIN SNOTIPOTRABAJADOR AS TT ON T.TipTrabId = TT.TipTrabId
     LEFT JOIN SRHPersonas AS P ON T.CPTrabConsecutivoID = P.SRHPersonasId
     LEFT JOIN SRHPersonasDireccion AS PD ON P.SRHPersonasId = PD.SRHPersonasId
@@ -76,7 +78,7 @@ def get_trabajadores(db) -> List[Dict]:
 
                 result.append({"employee": employee_data})
 
-            output_path = save_json_file(doctype_name, result, module_name)
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
 
             return result
@@ -169,6 +171,7 @@ def construir_tree_trabajadores(relaciones):
 # Para obtener las categorias ocupacionales y poniendo alias con el nombre del campo en el doctype
 def get_categorias_ocupacionales(db):
     doctype_name = "occupacional_category"
+    sqlserver_name = "SNOCATEGOCUP"
     module_name = "Cuba"
 
     query = """
@@ -184,7 +187,7 @@ def get_categorias_ocupacionales(db):
             rows = cursor.fetchall()
             result = [dict(zip(columns, row)) for row in rows]
 
-            output_path = save_json_file(doctype_name, result, module_name )
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name )
 
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
@@ -196,6 +199,7 @@ def get_categorias_ocupacionales(db):
 # Para obtener los cargos de los trabajadores
 def get_cargos_trabajadores(db):
     doctype_name = "designation"
+    sqlserver_name = "SNOCARGOS"
     module_name = "Setup"
     query = """
         SELECT CargDescripcion as designation_name
@@ -212,7 +216,7 @@ def get_cargos_trabajadores(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name)
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -223,6 +227,7 @@ def get_cargos_trabajadores(db):
 # Para obtener los tipos de trabajadores
 def get_tipos_trabajadores(db):
     doctype_name = "employment_type"
+    sqlserver_name = "SNOCTIPOTRABAJADOR"
     module_name = "HR"
     query = """
         SELECT TipTrabDescripcion as employee_type_name
@@ -239,7 +244,7 @@ def get_tipos_trabajadores(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name)
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -250,6 +255,7 @@ def get_tipos_trabajadores(db):
 # Para obtener las retenciones
 def get_tipos_retenciones(db):
     doctype_name = "withholding_type"
+    sqlserver_name = "SCPCONRETPAGAR"
     module_name = "Cuba"
     query = """
         SELECT CPCRetDescripcion  as withholding_type_name, 
@@ -271,7 +277,7 @@ def get_tipos_retenciones(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name)
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
