@@ -146,3 +146,20 @@ async def get_tasas_destajos_endpoint(params: ConexionParams):
             status_code=500,
             detail=f"Error al obtener los datos de las tasas de destajos {str(e)}",
         )
+
+@router.post(
+    "/colectivos",
+    summary="Lista los colectivos",
+    description="Muestra los colectivos",
+    tags=["Nómina"],
+)
+async def get_colectivos_endpoint(params: ConexionParams):
+    try:
+        with create_db_manager(params) as db:
+            data = nomina.get_colectivos(db)
+            return JSONResponse(content=data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener los datos de los colectivos {str(e)}",
+        )

@@ -88,7 +88,6 @@ def get_trabajadores(db) -> List[Dict]:
         raise Exception(f"Error al obtener datos de SCPTrabajadores: {str(e)}")
 
 
-
 # Prepara la relacion entre las tablas con SCPTrabajadores y las muestra en el frontend
 def get_relaciones_trabajadores(db) -> List[Dict]:
     query = """
@@ -187,8 +186,7 @@ def get_categorias_ocupacionales(db):
             rows = cursor.fetchall()
             result = [dict(zip(columns, row)) for row in rows]
 
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name )
-
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -207,7 +205,7 @@ def get_cargos_trabajadores(db):
         WHERE CargDesactivado  = '' OR CargDesactivado IS NULL
     """
     try:
-        with db.cursor() as cursor: 
+        with db.cursor() as cursor:
             cursor.execute(query)
             columns = [col[0] for col in cursor.description]
             rows = cursor.fetchall()
@@ -260,11 +258,11 @@ def get_tipos_retenciones(db):
     query = """
         SELECT CPCRetDescripcion  as withholding_type_name, 
         CRetDeudaCon as debt_to, 
-        ClcuIDCuenta as account,
+        c.ClcuDescripcion as account,
         CRetPPrioridad as priority,
         CRetPPenAlimenticia as child_support,
         CRetPConPlazos as by_installments 
-        FROM SCPCONRETPAGAR s
+        FROM SCPCONRETPAGAR s LEFT JOIN SCGCLASIFICADORDECUENTAS c ON s.ClcuIDCuenta = c.ClcuIDCuenta
         WHERE CRetPDesactivado  = '' OR CRetPDesactivado IS NULL
     """
     try:
@@ -284,10 +282,18 @@ def get_tipos_retenciones(db):
         logging.error(f"Error al obtener datos de los tipos de retenciones: {e}")
         raise
 
+
 # Para obtener loa pensionados
 def get_pensionados(db):
+    doctype_name = "customer"
+    sqlserver_name = "SNOMANTPENS"
+    module_name = "Selling"
     query = """
-        SELECT MantPensCiPens, MantPensNombre, MantPensPriApe, MantPensSegApe, MantPensDir, MantPensFormPag, MantPensTMagn
+        SELECT MantPensCiPens as NODEFINIDO, 
+        (MantPensNombre + ' ' + MantPensPriApe + ' ' + MantPensSegApe ) as customer_name, 
+        MantPensDir as customer_primary_address, 
+        MantPensFormPag as NODEFINIDO,
+        MantPensTMagn as NODEFINIDO
         FROM SNOMANTPENS
         WHERE MantPensDesactivada  = '' OR MantPensDesactivada IS NULL
     """
@@ -301,15 +307,22 @@ def get_pensionados(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
         logging.error(f"Error al obtener datos de los pensionados: {e}")
         raise
 
+
 # Para obtener tasas de destajo
 def get_tasas_destajos(db):
+    doctype_name = "NODEFINIDO"
+    sqlserver_name = "SNONOMENCLADORTASASDESTAJO"
+    module_name = "NODEFINIDO"
     query = """
-        SELECT TasaDDescripcion , TasaDTasa
+        SELECT TasaDDescripcion as item_name , 
+        TasaDTasa as price_list_rate
         FROM SNONOMENCLADORTASASDESTAJO
         WHERE TasaDDescripcion  != '' OR TasaDDescripcion IS NOT NULL
     """
@@ -323,7 +336,37 @@ def get_tasas_destajos(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
         logging.error(f"Error al obtener datos de las tasas de destajos: {e}")
+        raise
+
+
+# Para obtener colectivos
+def get_colectivos(db):
+    doctype_name = "NODEFINIDO"
+    sqlserver_name = "SNONOMENCLADORCOLECTIVOS"
+    module_name = "NODEFINIDO"
+    query = """
+        SELECT ColecId as colecId , ColecDescripcion as employee_group_name
+        FROM SNONOMENCLADORCOLECTIVOS
+        WHERE ColecDesactivado  != '' OR ColecDesactivado IS NOT NULL
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            # serializando los campos para que no de error los decimales
+            result = [
+                {key: serialize_value(value) for key, value in zip(columns, row)}
+                for row in rows
+            ]
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener datos de los colectivos: {e}")
         raise
