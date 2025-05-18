@@ -346,13 +346,46 @@ def get_tasas_destajos(db):
 
 # Para obtener colectivos
 def get_colectivos(db):
-    doctype_name = "NODEFINIDO"
+    doctype_name = "employee_group"
     sqlserver_name = "SNONOMENCLADORCOLECTIVOS"
-    module_name = "NODEFINIDO"
+    module_name = "Setup"
     query = """
         SELECT ColecId as colecId , ColecDescripcion as employee_group_name
         FROM SNONOMENCLADORCOLECTIVOS
         WHERE ColecDesactivado  != '' OR ColecDesactivado IS NOT NULL
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            # serializando los campos para que no de error los decimales
+            result = [
+                {key: serialize_value(value) for key, value in zip(columns, row)}
+                for row in rows
+            ]
+            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener datos de los colectivos: {e}")
+        raise
+
+
+# Para obtener colectivos
+def get_departamentos(db):
+    doctype_name = "employee_group"
+    sqlserver_name = "SMGAREASUBAREA"
+    module_name = "Setup"
+    query = """
+        SELECT 
+            s.AreaCodigo as areacodigo, 
+            s.AreaDescrip as parent_department,
+            s1.sareaDescrip as department_name
+        FROM 
+            S5Principal.dbo.SMGAREASUBAREA s
+        LEFT JOIN 
+            S5Principal.dbo.SMGAREASUBAREA1 s1 ON s.AreaCodigo = s1.AreaCodigo
     """
     try:
         with db.cursor() as cursor:
