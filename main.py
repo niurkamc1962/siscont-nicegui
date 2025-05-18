@@ -26,6 +26,9 @@ fastapi_app.include_router(nomina_router, prefix="/nomina")
 # Configurar estado global para toda la aplicacion
 app.state.store = AppState()
 
+# Configurar el storage secret temprano
+app.storage_secret = os.getenv("STORAGE_SECRET") or "siscont-erpnext"
+
 # Función para restaurar el estado desde el almacenamiento
 def init_app_state_from_storage():
     if app.storage.user.get('connected'):
@@ -55,7 +58,7 @@ async def module_page(client: Client, module_name: str):
 ui.run_with(
     fastapi_app,
     mount_path='/',  # Ruta base para NiceGUI
-    storage_secret=os.getenv("STORAGE_SECRET"),  # Necesario para sesiones
+    storage_secret=app.storage_secret,  # Necesario para sesiones
 )
 
 if __name__ == "__main__":
