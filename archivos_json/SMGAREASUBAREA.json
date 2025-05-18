@@ -1,0 +1,206 @@
+{
+    "doctype": "employee_group",
+    "module": "Setup",
+    "data": [
+        {
+            "areacodigo": "10",
+            "parent_department": "DIRECCION GENERAL (DGE)",
+            "department_name": "TRANSFORMACION DIGITAL"
+        },
+        {
+            "areacodigo": "11",
+            "parent_department": "UEB SOPORTE A APLICACIONES (SOP.AP)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "12",
+            "parent_department": "UEB GESTION DE INFOCOMUNICAC.(UGI)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "14",
+            "parent_department": "DIRECCION DE RECURSOS HUMANOS (DCH)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "15",
+            "parent_department": "INVESTIGACIÓN Y DESARROLLO",
+            "department_name": "AUTOM.MONTAJ.CAMIONES DE COMBUSTIB"
+        },
+        {
+            "areacodigo": "15",
+            "parent_department": "INVESTIGACIÓN Y DESARROLLO",
+            "department_name": "BIG DATA"
+        },
+        {
+            "areacodigo": "15",
+            "parent_department": "INVESTIGACIÓN Y DESARROLLO",
+            "department_name": "UNIVERSIDAD DE LA HABANA"
+        },
+        {
+            "areacodigo": "15",
+            "parent_department": "INVESTIGACIÓN Y DESARROLLO",
+            "department_name": "AMPLIACIÓN CONTROL PREDICTIVO RSS"
+        },
+        {
+            "areacodigo": "16",
+            "parent_department": "DIRECCIÓN DE INNOVACIÓN  DESARROLLO",
+            "department_name": "DIRECCIÓN"
+        },
+        {
+            "areacodigo": "16",
+            "parent_department": "DIRECCIÓN DE INNOVACIÓN  DESARROLLO",
+            "department_name": "DIP"
+        },
+        {
+            "areacodigo": "17",
+            "parent_department": "UEB DESARROLLO SIST.INFORMAT.(UDS)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "18",
+            "parent_department": "UEB SOPORTE TECNICO (UST)",
+            "department_name": "DIRECCIÓN UEB SOPORTE TÉCNICO"
+        },
+        {
+            "areacodigo": "18",
+            "parent_department": "UEB SOPORTE TECNICO (UST)",
+            "department_name": "BRIGADA MONTAJE RADIOCOMUNICACIONES"
+        },
+        {
+            "areacodigo": "18",
+            "parent_department": "UEB SOPORTE TECNICO (UST)",
+            "department_name": "MONTAJE DE REDES"
+        },
+        {
+            "areacodigo": "18",
+            "parent_department": "UEB SOPORTE TECNICO (UST)",
+            "department_name": "RADIOCOMUNICACIONES"
+        },
+        {
+            "areacodigo": "18",
+            "parent_department": "UEB SOPORTE TECNICO (UST)",
+            "department_name": "SOPORTE CAMAGUEY"
+        },
+        {
+            "areacodigo": "18",
+            "parent_department": "UEB SOPORTE TECNICO (UST)",
+            "department_name": "TALLER DE EQUIPOS"
+        },
+        {
+            "areacodigo": "18",
+            "parent_department": "UEB SOPORTE TECNICO (UST)",
+            "department_name": "RED INALAMBRICA"
+        },
+        {
+            "areacodigo": "19",
+            "parent_department": "UEB NEGOCIOS (UN)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "20",
+            "parent_department": "AMPLIAC.EDIF.SOCIO-ADMINIST.(ASA)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "21",
+            "parent_department": "UEB AUTOMATIZACION INDUSTRIAL(UAI)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "22",
+            "parent_department": "UEB METROLOGIA SANTIAGO DE CUBA UMS",
+            "department_name": "UEB METROLOGIA SANTIAGO DE CUBA"
+        },
+        {
+            "areacodigo": "23",
+            "parent_department": "DIRECCION TECNICA (DTE)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "24",
+            "parent_department": "UEB ASEGURAMEINTO (ULG)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "25",
+            "parent_department": "DIP SISCONT 6 (UDS)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "26",
+            "parent_department": "UEB GESTION DE INFOCOMUNICACIONES ",
+            "department_name": "DIRECCIÓN UEB INFOCOMUNICACIONES"
+        },
+        {
+            "areacodigo": "26",
+            "parent_department": "UEB GESTION DE INFOCOMUNICACIONES ",
+            "department_name": "ADMINISTRACION DE LA RED"
+        },
+        {
+            "areacodigo": "26",
+            "parent_department": "UEB GESTION DE INFOCOMUNICACIONES ",
+            "department_name": "SOPORTE TECNICO"
+        },
+        {
+            "areacodigo": "26",
+            "parent_department": "UEB GESTION DE INFOCOMUNICACIONES ",
+            "department_name": "MONITOREO"
+        },
+        {
+            "areacodigo": "26",
+            "parent_department": "UEB GESTION DE INFOCOMUNICACIONES ",
+            "department_name": "INFRAESTRUCTURA"
+        },
+        {
+            "areacodigo": "26",
+            "parent_department": "UEB GESTION DE INFOCOMUNICACIONES ",
+            "department_name": "CENTRO DE DATOS"
+        },
+        {
+            "areacodigo": "27",
+            "parent_department": "UEB SERVICIOS METROLOGICOS (USM)",
+            "department_name": "CTM HABANA (MHA)"
+        },
+        {
+            "areacodigo": "27",
+            "parent_department": "UEB SERVICIOS METROLOGICOS (USM)",
+            "department_name": "CTM MAYABEQUE (MMY)"
+        },
+        {
+            "areacodigo": "27",
+            "parent_department": "UEB SERVICIOS METROLOGICOS (USM)",
+            "department_name": "LABORATORIO PRODUCTOS CLAROS (MMY)"
+        },
+        {
+            "areacodigo": "27",
+            "parent_department": "UEB SERVICIOS METROLOGICOS (USM)",
+            "department_name": "CTM CARDENAS (MMT)"
+        },
+        {
+            "areacodigo": "27",
+            "parent_department": "UEB SERVICIOS METROLOGICOS (USM)",
+            "department_name": "CTM CABAIGUAN (MSS)"
+        },
+        {
+            "areacodigo": "27",
+            "parent_department": "UEB SERVICIOS METROLOGICOS (USM)",
+            "department_name": "CTM SANTIAGO (MSC)"
+        },
+        {
+            "areacodigo": "41",
+            "parent_department": "DIRECCION MERCADO Y COMUNICACION",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "42",
+            "parent_department": "DIRECCION CONTABLE FINANCIERA (DCF)",
+            "department_name": "None"
+        },
+        {
+            "areacodigo": "43",
+            "parent_department": "MANTENIMIENTO Y SERVICIO",
+            "department_name": "None"
+        }
+    ]
+}

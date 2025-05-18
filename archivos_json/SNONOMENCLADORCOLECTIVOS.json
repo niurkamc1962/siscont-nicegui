@@ -1,0 +1,246 @@
+{
+    "doctype": "employee_group",
+    "module": "Setup",
+    "data": [
+        {
+            "colecId": 1.0,
+            "employee_group_name": "SIOC                "
+        },
+        {
+            "colecId": 2.0,
+            "employee_group_name": "SIOC CE             "
+        },
+        {
+            "colecId": 3.0,
+            "employee_group_name": "SIGESGAS            "
+        },
+        {
+            "colecId": 4.0,
+            "employee_group_name": "CILINDRO GLP        "
+        },
+        {
+            "colecId": 5.0,
+            "employee_group_name": "TGESTOR             "
+        },
+        {
+            "colecId": 6.0,
+            "employee_group_name": "SOPORTE DE INFOPRO  "
+        },
+        {
+            "colecId": 7.0,
+            "employee_group_name": "ECOSISTEMA DIGITAL  "
+        },
+        {
+            "colecId": 8.0,
+            "employee_group_name": "MTTO FCO.0          "
+        },
+        {
+            "colecId": 9.0,
+            "employee_group_name": "MTTO SIOC UNIÓN     "
+        },
+        {
+            "colecId": 10.0,
+            "employee_group_name": "MTTO CUINSERVI      "
+        },
+        {
+            "colecId": 11.0,
+            "employee_group_name": "MTTO SISLOG         "
+        },
+        {
+            "colecId": 12.0,
+            "employee_group_name": "MTTO GISCUPET       "
+        },
+        {
+            "colecId": 13.0,
+            "employee_group_name": "SISTEMA INFO. CUPET "
+        },
+        {
+            "colecId": 14.0,
+            "employee_group_name": "BLOCKCHAIN          "
+        },
+        {
+            "colecId": 15.0,
+            "employee_group_name": "APK SERVICUPET      "
+        },
+        {
+            "colecId": 16.0,
+            "employee_group_name": "MSCDAI SCRUM        "
+        },
+        {
+            "colecId": 17.0,
+            "employee_group_name": "FICAG 2.0           "
+        },
+        {
+            "colecId": 18.0,
+            "employee_group_name": "PKI I+D+I CUPET     "
+        },
+        {
+            "colecId": 19.0,
+            "employee_group_name": "ROCKETCHAT          "
+        },
+        {
+            "colecId": 20.0,
+            "employee_group_name": "TGESTOR I+D+I       "
+        },
+        {
+            "colecId": 21.0,
+            "employee_group_name": "SICAR2.0            "
+        },
+        {
+            "colecId": 22.0,
+            "employee_group_name": "UEB DIRECC APLICA.  "
+        },
+        {
+            "colecId": 23.0,
+            "employee_group_name": "CONSULTOR APLICA    "
+        },
+        {
+            "colecId": 24.0,
+            "employee_group_name": "SOPORTE FUNCIONAL S5"
+        },
+        {
+            "colecId": 25.0,
+            "employee_group_name": "OTRAS APLICA SISCONT"
+        },
+        {
+            "colecId": 26.0,
+            "employee_group_name": "MTTO SISCONT 5      "
+        },
+        {
+            "colecId": 27.0,
+            "employee_group_name": "REDES PRODUCCION    "
+        },
+        {
+            "colecId": 28.0,
+            "employee_group_name": "REDES 1+D+I         "
+        },
+        {
+            "colecId": 29.0,
+            "employee_group_name": "SOPORTE SIOC INNOV  "
+        },
+        {
+            "colecId": 30.0,
+            "employee_group_name": "UEB APLICACIONES    "
+        },
+        {
+            "colecId": 31.0,
+            "employee_group_name": "CTROL ALMACEN ENCC  "
+        },
+        {
+            "colecId": 32.0,
+            "employee_group_name": "DIR UEB METROLOGIA  "
+        },
+        {
+            "colecId": 33.0,
+            "employee_group_name": "CTM HABANA          "
+        },
+        {
+            "colecId": 34.0,
+            "employee_group_name": "CTM MAYABEQUE       "
+        },
+        {
+            "colecId": 35.0,
+            "employee_group_name": "CTM CARDENAS        "
+        },
+        {
+            "colecId": 36.0,
+            "employee_group_name": "CTM CABAIGUAN       "
+        },
+        {
+            "colecId": 37.0,
+            "employee_group_name": "UEB METROLO SANTIAGO"
+        },
+        {
+            "colecId": 38.0,
+            "employee_group_name": "PROYECTO BIMBAM     "
+        },
+        {
+            "colecId": 39.0,
+            "employee_group_name": "SALA SITUACIONAL ENC"
+        },
+        {
+            "colecId": 40.0,
+            "employee_group_name": "PROYECTO DEVOPS     "
+        },
+        {
+            "colecId": 41.0,
+            "employee_group_name": "MANTENIMIENTO TORRES"
+        },
+        {
+            "colecId": 42.0,
+            "employee_group_name": "CERTIF. APKI        "
+        },
+        {
+            "colecId": 43.0,
+            "employee_group_name": "ESCANEO APKI        "
+        },
+        {
+            "colecId": 44.0,
+            "employee_group_name": "CONFERENCIAS APKI   "
+        },
+        {
+            "colecId": 45.0,
+            "employee_group_name": "DIPRO RH            "
+        },
+        {
+            "colecId": 46.0,
+            "employee_group_name": "SISCONT& INVERSIONES"
+        },
+        {
+            "colecId": 47.0,
+            "employee_group_name": "LOGISTICA COMBUST.  "
+        },
+        {
+            "colecId": 48.0,
+            "employee_group_name": "PROECTO SIPE        "
+        },
+        {
+            "colecId": 49.0,
+            "employee_group_name": "OBSERV. CIENTIFICO  "
+        },
+        {
+            "colecId": 50.0,
+            "employee_group_name": "IGUALDAD GENERO     "
+        },
+        {
+            "colecId": 51.0,
+            "employee_group_name": "TRANSFORMACION DIGT."
+        },
+        {
+            "colecId": 52.0,
+            "employee_group_name": "SISCONT6 PLANIF.    "
+        },
+        {
+            "colecId": 53.0,
+            "employee_group_name": "MAYABEQUE 1         "
+        },
+        {
+            "colecId": 54.0,
+            "employee_group_name": "SEG.APLIC. WEB      "
+        },
+        {
+            "colecId": 55.0,
+            "employee_group_name": "TALLER CAMAGUEY EP  "
+        },
+        {
+            "colecId": 56.0,
+            "employee_group_name": "TALLER CAMAGUEY TECN"
+        },
+        {
+            "colecId": 57.0,
+            "employee_group_name": "SALA SIT. ONEI      "
+        },
+        {
+            "colecId": 58.0,
+            "employee_group_name": "TRANFORMACION DIG.1 "
+        },
+        {
+            "colecId": 59.0,
+            "employee_group_name": "APK SERVICUPET      "
+        },
+        {
+            "colecId": 60.0,
+            "employee_group_name": "HERRAMIENTAS SISC5  "
+        }
+    ]
+}
