@@ -13,6 +13,7 @@ def save_json_file(doctype_name: str, data: list, module_name: str = None, sqlse
 
     # Preparando el formato del JSON
     content = OrderedDict()
+    content["sqlserver"] = sqlserver_name
     content["doctype"] = doctype_name
     content["module"] = module_name if module_name else "no_module"
     content["data"] = data

@@ -1,4 +1,5 @@
 {
+    "sqlserver": "SCPTRABAJADORES",
     "doctype": "employee",
     "module": "Setup",
     "data": [

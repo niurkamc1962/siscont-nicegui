@@ -1,4 +1,5 @@
 {
+    "sqlserver": "SNOCATEGOCUP",
     "doctype": "occupacional_category",
     "module": "Cuba",
     "data": [

@@ -16,8 +16,7 @@ async def nomina_view():
         with ui.tabs().classes('w-full') as tabs:
             tab1 = ui.tab('Relaciones entre Tablas')
             tab2 = ui.tab('Datos de Trabajadores')
-            tab3 = ui.tab('Exportar JSON')
-            tab4 = ui.tab('Importar JSON a Doctype')
+            tab3 = ui.tab('Importar JSON a Doctype')
 
         with ui.tab_panels(tabs, value=tab1).classes('w-full'):
             # Tab 1 - Relaciones entre Tablas
@@ -41,26 +40,15 @@ async def nomina_view():
             with ui.tab_panel(tab2):
                 ui.label('Datos de Trabajadores').classes('text-lg font-bold mb-2')
                 for t in trabajadores:
-                    with ui.expansion(f"{t['CPTrabNombre']} {t['CPTrabPriApellido']} {t['CPTrabSegApellido']}").classes('w-full'):
+                    with ui.expansion(f"{t['first_name']} {t['last_name']} {t['second_surname']}").classes(
+                            'w-full'):
                         for key, value in t.items():
                             ui.label(f"{key}: {value}")
 
-            # Tab 3 - Exportar JSON
+
+
+            # Tab 3 - Importar JSON a formato Doctype
             with ui.tab_panel(tab3):
-                # Fila para título y botón
-                with ui.row().classes('items-center justify-between mb-4 w-full'):
-                    # Título a la izquierda
-                    ui.label('Exportar JSON').classes('text-lg font-bold').style('flex-grow: 1')
-
-                    # Botón alineado a la derecha
-                    ui.button('Guardar JSON en archivo', on_click=lambda: ui.download(json.dumps(trabajadores, indent=2, ensure_ascii=False), 'trabajadores.json')).classes('ml-4')
-
-                # Área de texto debajo del título y botón
-                json_str = json.dumps(trabajadores, indent=2, ensure_ascii=False)
-                ui.textarea(value=json_str).classes('w-full h-96').style('overflow-y:auto')
-
-            # Tab 4 - Importar JSON a formato Doctype
-            with ui.tab_panel(tab4):
                 # Fila para título y botón
                 with ui.row().classes('items-center justify-between mb-4 w-full'):
                     # Título a la izquierda
