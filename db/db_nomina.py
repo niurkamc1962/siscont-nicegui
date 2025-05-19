@@ -7,7 +7,7 @@ import logging
 
 # Funcion para obtener los datos de SCPTrabajadores segun el query necesario para el JSON
 def get_trabajadores(db) -> List[Dict]:
-    doctype_name = "employee"
+    doctype_name = "Employee"
     sqlserver_name = "SCPTRABAJADORES"
     module_name = "Setup"
 
@@ -169,7 +169,7 @@ def construir_tree_trabajadores(relaciones):
 
 # Para obtener las categorias ocupacionales y poniendo alias con el nombre del campo en el doctype
 def get_categorias_ocupacionales(db):
-    doctype_name = "occupacional_category"
+    doctype_name = "Occupational Category"
     sqlserver_name = "SNOCATEGOCUP"
     module_name = "Cuba"
 
@@ -196,7 +196,7 @@ def get_categorias_ocupacionales(db):
 
 # Para obtener los cargos de los trabajadores
 def get_cargos_trabajadores(db):
-    doctype_name = "designation"
+    doctype_name = "Designation"
     sqlserver_name = "SNOCARGOS"
     module_name = "Setup"
     query = """
@@ -224,7 +224,7 @@ def get_cargos_trabajadores(db):
 
 # Para obtener los tipos de trabajadores
 def get_tipos_trabajadores(db):
-    doctype_name = "employment_type"
+    doctype_name = "Employment Type"
     sqlserver_name = "SNOCTIPOTRABAJADOR"
     module_name = "HR"
     query = """
@@ -252,7 +252,7 @@ def get_tipos_trabajadores(db):
 
 # Para obtener las retenciones
 def get_tipos_retenciones(db):
-    doctype_name = "withholding_type"
+    doctype_name = "Withholding Type"
     sqlserver_name = "SCPCONRETPAGAR"
     module_name = "Cuba"
     query = """
@@ -285,7 +285,7 @@ def get_tipos_retenciones(db):
 
 # Para obtener loa pensionados
 def get_pensionados(db):
-    doctype_name = "customer"
+    doctype_name = "Customer"
     sqlserver_name = "SNOMANTPENS"
     module_name = "Selling"
     query = """
@@ -346,7 +346,7 @@ def get_tasas_destajos(db):
 
 # Para obtener colectivos
 def get_colectivos(db):
-    doctype_name = "employee_group"
+    doctype_name = "Employee Group"
     sqlserver_name = "SNONOMENCLADORCOLECTIVOS"
     module_name = "Setup"
     query = """
@@ -374,7 +374,7 @@ def get_colectivos(db):
 
 # Para obtener colectivos
 def get_departamentos(db):
-    doctype_name = "employee_group"
+    doctype_name = "Department"
     sqlserver_name = "SMGAREASUBAREA"
     module_name = "Setup"
     query = """
