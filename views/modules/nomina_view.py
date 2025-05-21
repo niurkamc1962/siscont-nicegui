@@ -15,8 +15,8 @@ async def nomina_view():
 
         with ui.tabs().classes('w-full') as tabs:
             tab1 = ui.tab('Relaciones entre Tablas')
-            tab2 = ui.tab('Datos de Trabajadores')
-            tab3 = ui.tab('Importar JSON a Doctype')
+            tab2 = ui.tab('Exportar de sqlserver a JSON')
+            tab3 = ui.tab('Ver los archivos JSON generados')
 
         with ui.tab_panels(tabs, value=tab1).classes('w-full'):
             # Tab 1 - Relaciones entre Tablas
@@ -36,26 +36,12 @@ async def nomina_view():
                     <span :props="props">{{ props.node.description }}</span>
                 ''')
 
-            # Tab 2 - Datos de Trabajadores
+            # Tab 2 - Mostrar los JSON a crear
             with ui.tab_panel(tab2):
-                ui.label('Datos de Trabajadores').classes('text-lg font-bold mb-2')
-                for t in trabajadores:
-                    with ui.expansion(f"{t['first_name']} {t['last_name']} {t['second_surname']}").classes(
-                            'w-full'):
-                        for key, value in t.items():
-                            ui.label(f"{key}: {value}")
+                ui.label('Json a crear a partir de SQLServer').classes('text-lg font-bold mb-2')
 
 
-
-            # Tab 3 - Importar JSON a formato Doctype
+            # Tab 3 - Generar los JSON
             with ui.tab_panel(tab3):
-                # Fila para título y botón
-                with ui.row().classes('items-center justify-between mb-4 w-full'):
-                    # Título a la izquierda
-                    ui.label('Importar JSON a formato Doctype').classes('text-lg font-bold').style('flex-grow: 1')
-
-                    # Botón alineado a la derecha
-                    ui.button('Procesar JSON como Doctype', on_click=lambda: ui.notify('JSON procesado a Doctype')).classes('ml-4')
-
-                # Fila para la carga de archivo
-                file = ui.upload(on_upload=lambda e: ui.notify('Archivo cargado')).props('accept=.json')
+                ui.label('Mostrar proceso de los archivos que se van creando').classes('text-lg font-bold').style(
+                    'flex-grow: 1')

@@ -7,13 +7,9 @@ import pyodbc
 
 from db.database import create_db_manager
 from db.models import ConexionParams, GenerateDoctype, Payload
-from db.doctype_generator import generate_frappe_doctype
+# from db.doctype_generator import generate_frappe_doctype
 
 router = APIRouter()
-
-# @router.get("/test")
-# async def test_endpoint():
-#     return {"message": "API funciona!"}
 
 @router.get("/", tags=["Root"])
 async def hello():

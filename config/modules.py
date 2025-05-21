@@ -5,6 +5,7 @@ from views.modules.cobros_pagos_view import cobros_pagos_view
 from views.modules.control_almacen_view import control_almacen_view
 from views.modules.inventario_view import inventarios_view
 
+# Definiendo los modulos a mostrar en el menu para seleccionar la vista
 modules = {
     "Nomina": nomina_view,
     "Contabilidad": contabilidad_view,
