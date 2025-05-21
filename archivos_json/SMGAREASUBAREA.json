@@ -1,6 +1,5 @@
 {
-    "doctype": "employee_group",
-    "module": "Setup",
+    "doctype": "Department",
     "data": [
         {
             "areacodigo": "10",

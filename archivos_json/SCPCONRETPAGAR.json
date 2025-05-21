@@ -1,6 +1,5 @@
 {
-    "doctype": "withholding_type",
-    "module": "Cuba",
+    "doctype": "Withholding Type",
     "data": [
         {
             "withholding_type_name": "CONTRIBUCION E IMPUESTOS",

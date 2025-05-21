@@ -1,6 +1,5 @@
 {
-    "doctype": "designation",
-    "module": "Setup",
+    "doctype": "Designation",
     "data": [
         {
             "designation_name": "DIRECTOR GENERAL                   "

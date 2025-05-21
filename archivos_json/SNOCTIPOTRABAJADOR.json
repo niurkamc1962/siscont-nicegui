@@ -1,6 +1,5 @@
 {
-    "doctype": "employment_type",
-    "module": "HR",
+    "doctype": "Employment Type",
     "data": [
         {
             "employee_type_name": "ADIESTRADO"

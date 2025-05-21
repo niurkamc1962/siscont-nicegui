@@ -1,7 +1,5 @@
 {
-    "sqlserver": "SCPTRABAJADORES",
-    "doctype": "employee",
-    "module": "Setup",
+    "doctype": "Employee",
     "data": [
         {
             "employee": {

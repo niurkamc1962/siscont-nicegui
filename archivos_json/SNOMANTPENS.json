@@ -1,6 +1,5 @@
 {
-    "doctype": "customer",
-    "module": "Selling",
+    "doctype": "Customer",
     "data": [
         {
             "NODEFINIDO": "None",

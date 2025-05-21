@@ -1,6 +1,5 @@
 {
-    "doctype": "employee_group",
-    "module": "Setup",
+    "doctype": "Employee Group",
     "data": [
         {
             "colecId": 1.0,
