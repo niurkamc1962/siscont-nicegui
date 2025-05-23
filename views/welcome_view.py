@@ -3,7 +3,7 @@
 from nicegui import ui
 from datetime import datetime
 
-def welcome_view():
+async def welcome_view():
     with ui.column().classes('w-full min-h-screen'):
         # Usamos ui.element('div') para definir las columnas
         with ui.element('div').classes('columns-2 w-full p-0 m-0'):

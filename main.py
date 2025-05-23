@@ -31,7 +31,11 @@ app.storage_secret = os.getenv("STORAGE_SECRET") or "siscont-erpnext"
 
 # Función para restaurar el estado desde el almacenamiento
 def init_app_state_from_storage():
-    if app.storage.user.get('connected'):
+    if app_state.connected:  # ya inicializado
+        return
+
+    user = app.storage.user
+    if user.get('connected') and user.get('db_params'):
         try:
             app_state.connected = True
             app_state.db_params = ConexionParams(**app.storage.user['db_params'])  # Reconstruir DBParams desde el dict guardado
@@ -44,14 +48,30 @@ def init_app_state_from_storage():
 
 
 # Vista principal de NiceGUI (frontend)
+# Pagina principal
 @ui.page('/')
 async def index(client: Client):
     # Llamar a la función para restaurar el estado desde el almacenamiento
     init_app_state_from_storage()
+
+    if not app_state.connected or not app_state.db_params:
+        app.storage.user.clear()
+        await ui.notify("Sesión no válida. Reconéctate.", type='warning')
+        return
+
     await main_view(client)
 
+# Pagina para los modulos
 @ui.page('/modulo/{module_name}')
 async def module_page(client: Client, module_name: str):
+    init_app_state_from_storage()
+
+    if not app_state.connected or not app_state.db_params:
+        app.storage.user.clear()
+        await ui.notify("Sesión no válida. Reconéctate.", type='warning')
+        ui.navigate.to('/')
+        return
+
     await selected_module(module_name)
 
 # Ejecutar NiceGUI como la app principal

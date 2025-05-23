@@ -1,10 +1,13 @@
+# Endpoints de NOMINA
 from fastapi import APIRouter, HTTPException
 from db.database import create_db_manager
 from db.models import ConexionParams
+
 # from db.db_nomina import get_trabajadores, get_relaciones_trabajadores, get_categorias_ocupacionales
 from db import db_nomina as nomina
 from fastapi.responses import JSONResponse
-import json
+
+# import json
 
 router = APIRouter()
 
@@ -27,10 +30,12 @@ async def get_trabajadores_endpoint(params: ConexionParams):
         )
 
 
-@router.post("/relaciones-trabajadores",
+@router.post(
+    "/relaciones-trabajadores",
     summary="Muestra relacion de la tabla trabajadores con las demas",
     description="Muestra relacion entre las tablas con la de los trabajadores ",
-    tags=["Nómina"])
+    tags=["Nómina"],
+)
 async def get_relaciones_trabajadores_endpoint(params: ConexionParams):
     try:
         with create_db_manager(params) as db:
@@ -59,7 +64,8 @@ async def get_categorias_endpoint(params: ConexionParams):
             status_code=500,
             detail=f"Error al obtener datos de categorías: {str(e)}",
         )
-        
+
+
 @router.post(
     "/cargos-trabajadores",
     summary="Lista los cargos de los trabajadores",
@@ -76,7 +82,8 @@ async def get_cargos_trabajadores_endpoint(params: ConexionParams):
             status_code=500,
             detail=f"Error al obtener los cargos de los trabajadores: {str(e)}",
         )
-        
+
+
 @router.post(
     "/tipos-trabajadores",
     summary="Lista los tipos de trabajadores",
@@ -130,6 +137,7 @@ async def get_pensionados_endpoint(params: ConexionParams):
             detail=f"Error al obtener los datos de los pensionados {str(e)}",
         )
 
+
 @router.post(
     "/tasas_destajos",
     summary="Lista las tasas de destajos",
@@ -146,6 +154,7 @@ async def get_tasas_destajos_endpoint(params: ConexionParams):
             status_code=500,
             detail=f"Error al obtener los datos de las tasas de destajos {str(e)}",
         )
+
 
 @router.post(
     "/colectivos",
@@ -180,4 +189,23 @@ async def get_departamentos_endpoint(params: ConexionParams):
         raise HTTPException(
             status_code=500,
             detail=f"Error al obtener los datos de los departamentos {str(e)}",
+        )
+
+
+@router.post(
+    "/vacaciones",
+    summary="Lista Submayor de Vacaciones",
+    description="Muestra Submayor de Vacaciones",
+    tags=["Nómina"],
+)
+async def get_submayor_vacaciones_endpoint(params: ConexionParams):
+    try:
+        with create_db_manager(params) as db:
+            data = nomina.get_submayor_vacaciones(db)
+            return JSONResponse(content=data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener los datos del submayor de vacaciones"
+            f" {str(e)}",
         )

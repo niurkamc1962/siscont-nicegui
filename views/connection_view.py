@@ -7,7 +7,7 @@ from stores.store import AppState, app_state
 from datetime import datetime
 
 
-def connection_form(store:AppState):
+async def connection_form(store:AppState):
     settings = get_settings()
 
     with ui.column().classes('w-full h-screen flex items-center justify-center bg-gray-100 p-4'):

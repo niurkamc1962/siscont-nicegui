@@ -1,4 +1,6 @@
+# Funciones relacionadas con NOMINA
 from typing import List, Dict
+from venv import logger
 
 from utils.jsons_utils import save_json_file
 from utils.serialization import serialize_value  # importa tu helper
@@ -14,25 +16,24 @@ def get_trabajadores(db) -> List[Dict]:
     # Definimos un mapeo explícito de campos
     field_mapping = [
         # Campos del doctype principal (trabajador)
-        ('identity_number', ('employee', 'T.CPTrabConsecutivoID')),
-        ('first_name', ('employee', 'T.CPTrabNombre')),
-        ('last_name', ('employee', 'T.CPTrabPriApellido')),
-        ('second_surname', ('employee', 'T.CPTrabSegApellido')),
-        ('gender', ('employee', 'T.TrabSexo')),
-        ('date_of_joining', ('employee', 'T.TrabFechaAlta')),
-        ('contract_end_date', ('employee', 'T.TrabFechaBaja')),
-        ('salary_mode', ('employee', 'T.TrabFormaCobro')),
-        ('banc_ac_no', ('employee', 'T.TrabTmagnMN')),
-        ('company_email', ('employee', 'T.TrabCorreo')),
-        ('accumulate_vacation', ('employee', 'T.TrabCPVacaciones')),
-        ('direccion', ('employee', 'PD.SRHPersDireccionDir')),
-        ('oficial', ('employee', 'PD.SRHPersDireccionOficial')),
-
+        ("identity_number", ("employee", "T.CPTrabConsecutivoID")),
+        ("first_name", ("employee", "T.CPTrabNombre")),
+        ("last_name", ("employee", "T.CPTrabPriApellido")),
+        ("second_surname", ("employee", "T.CPTrabSegApellido")),
+        ("gender", ("employee", "T.TrabSexo")),
+        ("date_of_joining", ("employee", "T.TrabFechaAlta")),
+        ("contract_end_date", ("employee", "T.TrabFechaBaja")),
+        ("salary_mode", ("employee", "T.TrabFormaCobro")),
+        ("banc_ac_no", ("employee", "T.TrabTmagnMN")),
+        ("company_email", ("employee", "T.TrabCorreo")),
+        ("accumulate_vacation", ("employee", "T.TrabCPVacaciones")),
+        ("direccion", ("employee", "PD.SRHPersDireccionDir")),
+        ("oficial", ("employee", "PD.SRHPersDireccionOficial")),
         # Campos de otros doctypes
-        ('category_name', ('occupational_category', 'C.CategODescripcion')),
-        ('designation_name', ('designation', 'CAR.CargDescripcion')),
-        ('province_name', ('province', 'R.ProvCod')),
-        ('id', ('city', 'R.MunicCod')),
+        ("category_name", ("occupational_category", "C.CategODescripcion")),
+        ("designation_name", ("designation", "CAR.CargDescripcion")),
+        ("province_name", ("province", "R.ProvCod")),
+        ("id", ("city", "R.MunicCod")),
     ]
 
     # Construimos la cláusula SELECT
@@ -61,24 +62,27 @@ def get_trabajadores(db) -> List[Dict]:
 
             result = []
             for row in rows:
-                employee_data = {}
+                item = {}
 
                 for col, val in zip(columns, row):
                     for alias, (doctype, _) in field_mapping:
                         if alias == col:
                             val = serialize_value(val)
-
-                            if doctype == 'employee':
-                                employee_data[alias] = val
+                            if doctype == "employee":
+                                # campo del doctype
+                                item[alias] = val
                             else:
-                                if doctype not in employee_data:
-                                    employee_data[doctype] = {}
-                                employee_data[doctype][alias] = val
+                                # Los campos que son link a otros doctype
+                                if doctype not in item:
+                                    item[doctype] = {}
+                                item[doctype][alias] = val
                             break
 
-                result.append({"employee": employee_data})
-
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+                # result.append({"employee": employee_data})
+                result.append(item)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
 
             return result
@@ -186,7 +190,9 @@ def get_categorias_ocupacionales(db):
             rows = cursor.fetchall()
             result = [dict(zip(columns, row)) for row in rows]
 
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -214,7 +220,9 @@ def get_cargos_trabajadores(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -242,7 +250,9 @@ def get_tipos_trabajadores(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -275,7 +285,9 @@ def get_tipos_retenciones(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -307,7 +319,9 @@ def get_pensionados(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -336,7 +350,9 @@ def get_tasas_destajos(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -364,7 +380,9 @@ def get_colectivos(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
@@ -372,14 +390,13 @@ def get_colectivos(db):
         raise
 
 
-# Para obtener colectivos
+# Para obtener departamentos
 def get_departamentos(db):
     doctype_name = "Department"
     sqlserver_name = "SMGAREASUBAREA"
     module_name = "Setup"
     query = """
         SELECT 
-            s.AreaCodigo as areacodigo, 
             s.AreaDescrip as parent_department,
             s1.sareaDescrip as department_name
         FROM 
@@ -397,7 +414,44 @@ def get_departamentos(db):
                 {key: serialize_value(value) for key, value in zip(columns, row)}
                 for row in rows
             ]
-            output_path = save_json_file(doctype_name, result, module_name, sqlserver_name)
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
+            logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
+            return result
+    except Exception as e:
+        logging.error(f"Error al obtener datos de los colectivos: {e}")
+        raise
+
+
+# Para submayor de vacaciones
+def get_submayor_vacaciones(db):
+    doctype_name = "Employee Opening Vacation Subledger"
+    sqlserver_name = "SNOSMVACACIONES"
+    module_name = "Cuba"
+    query = """
+        SELECT top 20 s.SMVacSaldoInicialI as initial_balance_in_amount, 
+        s.SMVacSaldoInicialD as initial_balance_in_days, 
+        s2.CPTrabConsecutivoID, 
+        s2.CPTrabExp 
+        from dbo.SNOSMVACACIONES s JOIN SCPTRABAJADORES s2 ON 
+        s.SMVacDesactivado = '' and s.SMVacDesactivado IS NOT NULL 
+    """
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            logging.info("Pase por rows")
+            # serializando los campos para que no de error los decimales
+            result = [
+                {key: serialize_value(value) for key, value in zip(columns, row)}
+                for row in rows
+            ]
+            output_path = save_json_file(
+                doctype_name, result, module_name, sqlserver_name
+            )
+
             logging.info(f"{doctype_name}.json guardado correctamente en {output_path}")
             return result
     except Exception as e:
