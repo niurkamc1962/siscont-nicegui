@@ -1,0 +1,125 @@
+{
+    "doctype": "Employee Opening Vacation Subledger",
+    "data": [
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "00010367527",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "00032166882",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "00052668642",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "00091566308",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "00112560300",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01020867617",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01021568460",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01040568259",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01042968463",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01071866737",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01073081731",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01102368543",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01102566727",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "01111468033",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "02011365770",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "02021364491",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "02101361880",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "02110766885",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "02111266773",
+            "CPTrabExp": "     "
+        },
+        {
+            "initial_balance_in_amount": 0.0,
+            "initial_balance_in_days": 0.0,
+            "CPTrabConsecutivoID": "02121866981",
+            "CPTrabExp": "     "
+        }
+    ]
+}
