@@ -1,6 +1,4 @@
 # Endpoints de NOMINA
-import logging
-
 from fastapi import APIRouter, HTTPException, Query
 from db.database import create_db_manager
 from db.models import ConexionParams
@@ -9,7 +7,10 @@ from db.models import ConexionParams
 from db import db_nomina as nomina
 from fastapi.responses import JSONResponse
 
-# import json
+import logging
+
+# Obtiene un logger con el nombre de este módulo
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -21,6 +22,7 @@ router = APIRouter()
     tags=["Nómina"],
 )
 async def get_trabajadores_endpoint(params: ConexionParams):
+    logger.info("Endpoint trabajadores")
     try:
         with create_db_manager(params) as db:
             data = nomina.get_trabajadores(db)
@@ -230,32 +232,4 @@ async def get_ssubmayor_salarios_no_reclamados_endpoint(params: ConexionParams):
             detail=f"Error al obtener los datos del submayor de salarios no "
             f"reclamados"
             f" {str(e)}",
-        )
-
-
-@router.post(
-    "/vacaciones/export_full_json",  # Un nombre de endpoint que indique una acción de exportación
-    summary="Exporta el Submayor de Vacaciones completo a un único JSON",
-    description="Recopila todos los registros del Submayor de Vacaciones y los guarda en un único archivo JSON. Retorna la ruta del archivo y estadísticas.",
-    tags=["Nómina"],
-)
-async def export_full_vacaciones_json_endpoint(
-    params: ConexionParams,
-    page_size: int = Query(
-        100,
-        ge=1,
-        le=1000,
-        description="Tamaño de la página para la lectura interna de la base de datos.",
-    ),
-):
-    try:
-        with create_db_manager(params) as db:
-            # Llama a la función que genera el JSON completo
-            export_info = nomina.generate_full_vacaciones_json(db, page_size=page_size)
-            return JSONResponse(content=export_info)
-    except Exception as e:
-        logging.error(f"Error en el endpoint /vacaciones/export_full_json: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error al exportar el submayor de vacaciones a JSON: {str(e)}",
         )

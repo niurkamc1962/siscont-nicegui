@@ -1,0 +1,10 @@
+{
+    "doctype": "Opening of the Unclaimed Salary Subledger",
+    "data": [
+        {
+            "employee": "90031026497",
+            "amount": 8.15,
+            "reimbursement_date": "2009-12-15 00:00:00"
+        }
+    ]
+}
