@@ -939,20 +939,38 @@ def get_submayor_vacaciones(db):
     module_name = "Cuba"
 
     total_count_query = """
-        SELECT COUNT(*) FROM SNOSMVACACIONES
-        WHERE SMVacDesactivado = '' OR SMVacDesactivado IS NOT  NULL
+        SELECT COUNT(*) AS total
+            FROM (
+                SELECT
+                    s.CPTrabConsecutivoID
+                FROM
+                    S5Principal.dbo.SNOSMVACACIONES s
+                JOIN S5Principal.dbo.SCPTRABAJADORES s2 ON
+                    s.CPTrabConsecutivoID = s2.CPTrabConsecutivoID
+                WHERE
+                    s.SMVacDesactivado = '' AND s2.TrabDesactivado = ''
+                GROUP BY
+                    s.CPTrabConsecutivoID
+            ) AS subconsulta;        
     """
 
     base_query = """
-        SELECT 
-            s.SMVacSaldoInicialI as initial_balance_in_amount,
-            s.SMVacSaldoInicialD as initial_balance_in_days,        
-            s.CPTrabConsecutivoID as employee, 
-            s2.CPTrabExp as expediente_laboral
-        FROM SNOSMVACACIONES s
-        JOIN SCPTRABAJADORES s2 ON s.CPTrabConsecutivoID = s2.CPTrabConsecutivoID
-        WHERE SMVacDesactivado = '' OR SMVacDesactivado IS NOT  NULL
-        ORDER BY SMVacId
+        SELECT
+            MAX(s.SMVacSaldoInicialI) AS initial_balance_in_amount,
+            MAX(s.SMVacSaldoInicialD) AS initial_balance_in_days,
+            s.CPTrabConsecutivoID AS carnet_identidad_trabajador,
+            MAX(s2.CPTrabExp) AS expediente_laboral,
+            MAX(s.SMVacId) AS SMVacId
+        FROM
+            SNOSMVACACIONES s
+        JOIN SCPTRABAJADORES s2 ON
+            s.CPTrabConsecutivoID = s2.CPTrabConsecutivoID
+        WHERE
+            s.SMVacDesactivado = '' AND s2.TrabDesactivado = ''
+        GROUP BY
+            s.CPTrabConsecutivoID
+        ORDER BY
+            MAX(s.SMVacId) DESC
         OFFSET ? ROWS
         FETCH NEXT ? ROWS ONLY;
     """
